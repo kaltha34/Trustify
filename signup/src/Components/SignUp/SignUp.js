@@ -2,6 +2,7 @@ import "./SignUp.css";
 import { FaGoogle, FaApple, FaEnvelope } from "react-icons/fa";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -10,16 +11,39 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [error, setErrorMessage] = useState("");
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
+
+    // Validate input fields
     if (!(name && email && password && role)) {
       alert("Please fill in all fields.");
-    } else {
-      setSuccessMessage("SignUp Succefully.");
+      return;
+    }
+
+    try {
+      // Send API request to backend
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        {
+          name,
+          email,
+          password,
+          role,
+        }
+      );
+
+      // On success
+      setSuccessMessage("Signup successfully.");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/login"); // Redirect to login page after 2 seconds
       }, 2000);
+    } catch (error) {
+      // On error
+      setErrorMessage(
+        error.response ? error.response.data.message : "An error occurred"
+      );
     }
   };
 
