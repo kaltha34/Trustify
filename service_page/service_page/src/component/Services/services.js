@@ -101,6 +101,23 @@ const Services = () => {
         ))}
       </div>
 
+      <div className="services-footer">
+        <div className="stats-container">
+          <div className="stat-item">
+            <h4>10K+</h4>
+            <p>Active Users</p>
+          </div>
+          <div className="stat-item">
+            <h4>99.9%</h4>
+            <p>Uptime</p>
+          </div>
+          <div className="stat-item">
+            <h4>24/7</h4>
+            <p>Support</p>
+          </div>
+        </div>
+      </div>
+
       
     </div>
   );
