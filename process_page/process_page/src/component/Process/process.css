@@ -98,3 +98,52 @@
   background: #004d4d;
 }
 
+/* Dark Mode Styles */
+.dark-mode .process-container {
+  background: linear-gradient(to bottom, #1a1a1a, #2d2d2d);
+}
+
+.dark-mode .process-header,
+.dark-mode .timeline-card,
+.dark-mode .info-card {
+  background: #333;
+}
+
+.dark-mode .header-content h1,
+.dark-mode .card-header h2,
+.dark-mode .info-card h3 {
+  color: #fff;
+}
+
+.dark-mode .process-description,
+.dark-mode .sub-steps li,
+.dark-mode .info-card ul li {
+  color: #ccc;
+}
+
+.dark-mode .identity-circle {
+  background: #0f4d5c;
+}
+
+.dark-mode .ring {
+  border-color: #0f4d5c;
+}
+
+.dark-mode .orbital-icon {
+  background: #333;
+  color: #0f4d5c;
+}
+
+.dark-mode .step-icon,
+.dark-mode .arrow-icon {
+  color: #0f4d5c;
+}
+
+.dark-mode .timeline-number,
+.dark-mode .timeline-connector {
+  background: #0f4d5c;
+}
+
+.dark-mode .info-card ul li::before {
+  color: #0f4d5c;
+}
