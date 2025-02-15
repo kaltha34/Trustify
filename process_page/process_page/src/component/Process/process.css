@@ -1,0 +1,100 @@
+.process-container {
+  margin-left: 250px;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+/* Timeline Styles */
+.timeline-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.timeline-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.timeline-number {
+  background: #004d4d;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.timeline-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  transition: transform 0.2s;
+}
+
+.timeline-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card-header h2 {
+  color: #004d4d;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.step-icon {
+  color: #004d4d;
+}
+
+.sub-steps {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.sub-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.arrow-icon {
+  color: #004d4d;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.timeline-connector {
+  position: absolute;
+  left: 20px;
+  top: 40px;
+  bottom: -40px;
+  width: 2px;
+  background: #004d4d;
+}
+
