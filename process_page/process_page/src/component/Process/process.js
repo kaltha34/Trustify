@@ -4,7 +4,10 @@ import {
   Shield, 
   Key, 
   Settings, 
-  ArrowRight, 
+  ArrowRight,
+  Lock, 
+  UserCheck, 
+  Database  
   
 } from 'lucide-react';
 import './process.css';
@@ -57,8 +60,33 @@ const Process = () => {
   
   return (
     <div className="process-container">
-      
-      
+      {/* Header Section */}
+      <div className="process-header">
+        <div className="header-content">
+          <h1>Identity Verification Process</h1>
+          <p className="process-description">
+            Secure your digital identity with Trustify's advanced blockchain technology
+          </p>
+        </div>
+        <div className="header-graphic">
+          <div className="graphic-identity">
+            <div className="identity-circle">
+              <Lock className="center-icon" size={32} />
+            </div>
+            <div className="identity-rings">
+              <div className="ring ring-1">
+                <UserCheck className="orbital-icon" size={24} />
+              </div>
+              <div className="ring ring-2">
+                <Shield className="orbital-icon" size={24} />
+              </div>
+              <div className="ring ring-3">
+                <Database className="orbital-icon" size={24} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Timeline Section */}
       <div className="timeline-container">

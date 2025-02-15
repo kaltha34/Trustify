@@ -5,6 +5,36 @@
   background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
 }
 
+/* Header Styles */
+.process-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  flex: 1;
+}
+
+.header-content h1 {
+  color: #004d4d;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.process-description {
+  color: #666;
+  font-size: 1.2rem;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
 /* Timeline Styles */
 .timeline-container {
   max-width: 1000px;
