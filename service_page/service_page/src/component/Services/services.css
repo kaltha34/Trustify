@@ -66,6 +66,14 @@
   box-shadow: 0 0 0 3px rgba(0, 77, 77, 0.1);
 }
 
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
 /* Service Card Styles */
 .service-card {
   background: white;
