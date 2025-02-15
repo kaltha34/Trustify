@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale } from 'chart.js';
 import { UserCheck, BadgeCheck, ShieldAlert, BarChart3, FileText, Lock } from 'lucide-react'; 
-
+import './InsightsPage.css';
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale);
