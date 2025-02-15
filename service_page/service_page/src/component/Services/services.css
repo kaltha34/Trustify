@@ -154,3 +154,51 @@
   color: #666;
   font-size: 1.1rem;
 }
+/* Dark Mode Styles */
+.dark-mode .services-container {
+  background: linear-gradient(to bottom, #1a1a1a, #2d2d2d);
+}
+
+.dark-mode .services-header,
+.dark-mode .service-card,
+.dark-mode .services-footer {
+  background: #333;
+}
+
+.dark-mode .services-header h1 {
+  color: white;
+}
+
+.dark-mode .services-header h1 span {
+  color: #176f85;
+}
+
+.dark-mode .services-subtitle,
+.dark-mode .service-card p,
+.dark-mode .stat-item p {
+  color: #ccc;
+}
+
+.dark-mode .search-bar input {
+  background: #444;
+  border-color: #555;
+  color: white;
+}
+
+.dark-mode .search-icon {
+  color: #ccc;
+}
+
+.dark-mode .service-icon {
+  background-color: #176f85;
+}
+
+.dark-mode .service-card h3,
+.dark-mode .learn-more,
+.dark-mode .stat-item h4 {
+  color: #176f85;
+}
+
+.dark-mode .card-decoration {
+  background: radial-gradient(circle, rgba(15, 77, 92, 0.1) 0%, rgba(15, 77, 92, 0) 70%);
+}
