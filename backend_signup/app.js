@@ -4,13 +4,14 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const socketIo = require('socket.io');
 const http = require('http');
-
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 const io = socketIo(server); // Setting up socket.io server
 
+app.use(cors());
 // Middleware
 app.use(express.json());
 app.use('/api/auth', authRoutes);

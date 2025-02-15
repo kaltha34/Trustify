@@ -102,3 +102,44 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// **Verify OTP Function**
+exports.verifyOTP = async (req, res) => {
+  const { otpInput, token } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if OTP exists and has expired
+    if (!user.otp) {
+      return res.status(400).json({ message: 'No OTP found. Please request a new OTP.' });
+    }
+
+    const otpExpirationTime = 5 * 60 * 1000; // OTP expiration time (5 minutes)
+    const otpAge = Date.now() - user.otpTimestamp;
+
+    if (otpAge > otpExpirationTime) {
+      return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
+    }
+
+    // Check if the OTP matches
+    if (user.otp !== otpInput) {
+      return res.status(400).json({ message: 'Incorrect OTP. Please try again.' });
+    }
+
+    // OTP is valid, clear OTP fields
+    user.otp = null; // Clear OTP after successful verification
+    user.otpTimestamp = null; // Clear OTP timestamp
+    await user.save();
+
+    res.status(200).json({ message: 'OTP verified successfully' });
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error verifying OTP.' });
+  }
+};
