@@ -12,22 +12,84 @@
   margin-left: 30px;
 }
 
-.card {
-  border: 5px solid white;
+.Dashboard-body {
+  display: flex; /* Flexbox layout */
+  justify-content: space-between; /* Space between columns */
+  gap: 1rem; /* Add space between items */
 }
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap; /* Allow cards to wrap to the next line */
-  justify-content: space-around; /* Space out cards evenly */
-  margin-bottom: 20px; /* Space below the card section */
+.Verifications {
+  flex: 1; /* Equal width for each column */
+  text-align: center; /* Center content horizontally */
+  padding-bottom: 40px;
+}
+
+.Verification-content {
+  border-radius: 20px;
+  height: 400px;
+  width: 370px;
+  border: 2px solid white;
+}
+
+.light-mode .Verification-content {
+  border: 2px solid black;
+}
+.Verification-content h1 {
+  font-size: 30px;
+  margin-left: 5px;
+  margin-top: 25px;
+}
+.Verification-content p {
+  margin-left: 5px;
+  font-size: 16px;
+}
+
+.verify-button {
+  background-color: black;
+  color: white;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 310px;
+  height: 50px;
+  border-radius: 50px;
+  border: 1px solid white;
+  font-size: 18px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.light-mode .verify-button {
+  background-color: blue;
+  border: 2px solid black;
+}
+.verify-button:hover {
+  transform: scale(1.1);
+}
+
+.paragraph h4 {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 10px;
+
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.paragraph h4:hover {
+  transform: scale(1.1);
+  color: blue;
+  text-decoration: underline blue;
+}
+.image {
+  margin-left: 5px;
+  margin-top: 30px;
 }
 
 .Dashboard-Footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4rem;
+
   padding: 2rem;
   background: rgb(0, 0, 0);
   border-radius: 12px;

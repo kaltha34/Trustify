@@ -1,11 +1,39 @@
 import React from "react";
 import "./dashboard.css";
 import { Facebook, Linkedin, Instagram } from "lucide-react";
+import { Link } from "react-router-dom";
+import { FaUserShield } from "react-icons/fa";
 
 const Dashboard = () => {
   return (
     <div className="Dashboard-container">
       <h1>Dashboard</h1>
+      <div className="Dashboard-body">
+        <div className="Verifications">
+          <div className="Verification-content">
+            <FaUserShield className="image" size={90} color="blue" />
+            <h1>
+              Let's Verify Your
+              <br />
+              Identity in 3 minutes
+            </h1>
+            <p>
+              Verification of your identity is neccessary to
+              <br />
+              finalize your application for trustify
+            </p>
+            <Link to="/upload">
+              <button className="verify-button">Start Verify</button>
+            </Link>
+
+            <div className="paragraph">
+              <h4>Why do I need to verify my identity</h4>
+            </div>
+          </div>
+        </div>
+        <div className="Verifications"></div>
+        <div className="Verifications"></div>
+      </div>
 
       <div className="Dashboard-Footer">
         <div className="footer-logo">TRUSTIFY</div>
