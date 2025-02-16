@@ -57,7 +57,27 @@ const Process = () => {
     }
   ];
 
-  
+  const features = [
+    {
+      title: 'Why Choose Trustify?',
+      items: [
+        'Advanced blockchain security',
+        'Quick and easy verification',
+        'Complete data control',
+        '24/7 Support'
+      ]
+    },
+    {
+      title: 'Security Features',
+      items: [
+        'End-to-end encryption',
+        'Tamper-proof records',
+        'Biometric authentication',
+        'Decentralized storage'
+      ]
+    }
+  ];
+
   return (
     <div className="process-container">
       {/* Header Section */}
@@ -117,7 +137,20 @@ const Process = () => {
         ))}
       </div>
 
-      
+      {/* Features Section */}
+      <div className="info-section">
+        {features.map((feature, index) => (
+          <div key={index} className="info-card">
+            <h3>{feature.title}</h3>
+            <ul>
+              {feature.items.map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 };
