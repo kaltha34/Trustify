@@ -1,0 +1,115 @@
+.Dashboard-container {
+  margin-left: 250px;
+  padding-top: 1rem;
+  padding-left: 2rem;
+  padding-right: 1rem;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.Dashboard-container h1 {
+  font-size: 35px;
+  letter-spacing: 1px;
+  margin-left: 30px;
+}
+
+.card {
+  border: 5px solid white;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow cards to wrap to the next line */
+  justify-content: space-around; /* Space out cards evenly */
+  margin-bottom: 20px; /* Space below the card section */
+}
+
+.Dashboard-Footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4rem;
+  padding: 2rem;
+  background: rgb(0, 0, 0);
+  border-radius: 12px;
+  bottom: 0;
+}
+
+.footer-logo {
+  margin-left: 10px;
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ff00ff, #ff0099, #ff3300, #ff6600);
+
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientMove 3s ease infinite;
+  align-items: left;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.footer-sections {
+  margin-left: 100px;
+  margin-top: -35px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+}
+.footer-column {
+  width: 20%;
+}
+
+.footer-column h4 {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin: 5px 0;
+}
+
+.footer-column ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+  color: #bbbbbb;
+}
+
+.footer-column p {
+  font-size: 14px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.social-icons a {
+  color: white;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #bbbbbb;
+}
