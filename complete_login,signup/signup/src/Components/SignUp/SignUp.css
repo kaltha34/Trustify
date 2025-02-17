@@ -1,0 +1,197 @@
+body {
+  background-image: url(../../../assets//SignUpBackground.jpg);
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  font-family: Arial, sans-serif;
+  background-repeat: no-repeat;
+  margin: 0;
+}
+
+.SignUp-Container {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  height: 100vh;
+  backdrop-filter: blur(5px);
+}
+.SignUp-Container p {
+  color: white;
+  font-weight: bolder;
+  font-size: 30px;
+  margin-top: 90px;
+  margin-left: 60px;
+}
+.SignUp-Container h1 {
+  color: white;
+  font-size: 100px;
+  font-weight: bolder;
+  margin-top: 120px;
+  margin-left: -175px;
+}
+.Login-Button {
+  background-color: rgb(0, 0, 0);
+  width: 110px;
+  height: 50px;
+  margin-left: 850px;
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: bolder;
+  color: white;
+  border-radius: 50px;
+  border: 3px solid white;
+}
+
+.Login-Button:hover {
+  transform: scale(1.1);
+}
+
+.SignUp-Form {
+  width: 40%;
+  padding-left: 12rem;
+  border-radius: 10px;
+  margin-top: 240px;
+  margin-left: -600px;
+}
+.SignUp-Form h2 {
+  padding-left: 90px;
+  padding-bottom: 10px;
+  font-size: 30px;
+  font-weight: bolder;
+  color: white;
+}
+
+.SignUp-Form form {
+  display: flex;
+  flex-direction: column;
+}
+.SignUp-Form input {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  width: 400px;
+}
+.SignUp-Form select {
+  border-radius: 50px;
+  width: 425px;
+  padding: 0.8rem;
+  margin-bottom: 15px;
+  padding-left: 30px;
+  padding-right: 35px;
+}
+
+select {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding-left: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.select-container {
+  position: relative;
+  padding-right: 35px;
+  width: 425px;
+}
+
+.select-container::after {
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Make placeholder text gray */
+select option:disabled {
+  color: rgb(0, 0, 0);
+  font-style: italic;
+}
+
+select:hover {
+  border: 5px solid #85ad27;
+  cursor: pointer;
+}
+input:hover {
+  border: 5px solid #85ad27;
+}
+input::placeholder {
+  font-size: 16px;
+  color: black;
+  padding-left: 20px;
+}
+input:focus::placeholder {
+  color: transparent;
+  border-width: 3px;
+}
+
+.SignUp-Button {
+  background-color: black;
+  border: 3px solid white;
+  color: white;
+  height: 50px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bolder;
+  border-radius: 50px;
+  width: 430px;
+}
+.SignUp-Button:hover {
+  transform: scale(1.05);
+}
+
+.Click-SignUp p {
+  font-size: 10px;
+}
+.Options {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 390px;
+  margin-left: 100px;
+}
+
+.button {
+  width: 300px;
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 10px 20px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  border: 3px solid white;
+}
+.button button:hover {
+  transform: scale(1.1);
+}
+.SignUp-Form p {
+  color: green;
+  margin-top: 10px;
+  margin-left: 140px;
+  font-size: 16px;
+}
+
+.Already-Acc p {
+  color: white;
+  margin-top: 10px;
+  margin-left: 90px;
+  font-size: 16px;
+}
+
+.Already-Acc span {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
