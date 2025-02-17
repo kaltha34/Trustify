@@ -1,0 +1,35 @@
+.UploadDoc-Body {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 400px;
+  height: 300px;
+  padding: 20px;
+  text-align: center;
+  margin: 150px auto auto 350px;
+  transition: background-color 0.3s;
+}
+
+.UploadDoc-Body.hover {
+  background-color: #e0e0e0;
+}
+
+.UploadDoc-Body label {
+  color: blue;
+  cursor: pointer;
+}
+.UploadDoc-Body p,
+label {
+  margin-top: 110px;
+  font-size: 20px;
+}
+
+.File-Display {
+  margin-left: 900px;
+  margin-top: -330px;
+  width: 300px;
+  height: 300px;
+  border-radius: 30px;
+  letter-spacing: 1px;
+  text-align: center;
+  border: 2px solid white;
+}
