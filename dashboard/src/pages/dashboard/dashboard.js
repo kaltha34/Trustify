@@ -12,27 +12,33 @@ const Dashboard = () => {
         <div className="Verifications">
           <div className="Verification-content">
             <FaUserShield className="image" size={90} color="blue" />
-            <h1>
-              Let's Verify Your
-              <br />
-              Identity in 3 minutes
-            </h1>
+            <h1>Let's Verify Your Identity in 3 minutes</h1>
             <p>
-              Verification of your identity is neccessary to
-              <br />
-              finalize your application for trustify
+              Verification of your identity is necessary to finalize your
+              application for Trustify.
             </p>
             <Link to="/upload">
               <button className="verify-button">Start Verify</button>
             </Link>
-
             <div className="paragraph">
-              <h4>Why do I need to verify my identity</h4>
+              <h4>Why do I need to verify my identity?</h4>
             </div>
           </div>
         </div>
-        <div className="Verifications"></div>
-        <div className="Verifications"></div>
+
+        <div className="Verifications">
+          <div className="Verification-content">
+            <h2>Card 2</h2>
+            <p>Additional card content goes here.</p>
+          </div>
+        </div>
+
+        <div className="Verifications">
+          <div className="Verification-content">
+            <h2>Card 3</h2>
+            <p>More details in this box.</p>
+          </div>
+        </div>
       </div>
 
       <div className="Dashboard-Footer">

@@ -13,32 +13,51 @@
 }
 
 .Dashboard-body {
-  display: flex; /* Flexbox layout */
-  justify-content: space-between; /* Space between columns */
-  gap: 1rem; /* Add space between items */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .Verifications {
-  flex: 1; /* Equal width for each column */
-  text-align: center; /* Center content horizontally */
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  text-align: center;
   padding-bottom: 40px;
 }
 
 .Verification-content {
   border-radius: 20px;
   height: 400px;
-  width: 370px;
+  width: 100%;
   border: 2px solid white;
+  padding: 1rem;
 }
 
 .light-mode .Verification-content {
   border: 2px solid black;
 }
-.Verification-content h1 {
-  font-size: 30px;
-  margin-left: 5px;
-  margin-top: 25px;
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .Dashboard-body {
+    justify-content: space-around;
+  }
 }
+
+@media (max-width: 768px) {
+  .Dashboard-body {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Verifications {
+    max-width: 100%;
+  }
+}
+
 .Verification-content p {
   margin-left: 5px;
   font-size: 16px;
