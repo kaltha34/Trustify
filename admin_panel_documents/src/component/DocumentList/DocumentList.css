@@ -36,6 +36,10 @@
   color: #f57c00;
 }
 
+.status-icon.verified {
+  color: #4caf50;
+}
+
 
 .id-list {
   display: flex;

@@ -72,6 +72,16 @@ const DocumentList = () => {
         </div>
       </div>
 
+      <div className="list-container">
+        <div className="list-header">
+          <h2>Verified</h2>
+          <span className="status-icon verified">✓</span>
+        </div>
+        <div className="id-list">
+          {documents.verified.map(doc => renderIdItem(doc, 'verified'))}
+        </div>
+      </div>
+
       
     </div>
   );
