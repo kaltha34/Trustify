@@ -1,0 +1,80 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import './DocumentList.css';
+
+const DocumentList = () => {
+  const navigate = useNavigate();
+  
+  const [isAdmin] = useState(true); // In real app, this would come from auth context
+
+  // Initialize documents state from localStorage or with default values
+  const [documents, setDocuments] = useState(() => {
+    const savedDocs = localStorage.getItem('documentBlockStatus');
+    if (savedDocs) {
+      return JSON.parse(savedDocs);
+    }
+    
+    return {
+      pending: Array.from({ length: 8 }, (_, i) => ({
+        id: '12345678',
+        index: i + 1,
+        isBlocked: false
+      })),
+      verified: Array.from({ length: 8 }, (_, i) => ({
+        id: '12345678',
+        index: i + 1,
+        isBlocked: false
+      }))
+    };
+  });
+
+  const handleBlock = (e, status, index) => {
+    e.stopPropagation(); // Prevent navigation when clicking block button
+    
+    setDocuments(prevDocs => ({
+      ...prevDocs,
+      [status]: prevDocs[status].map((doc, i) => 
+        i === index - 1 ? { ...doc, isBlocked: !doc.isBlocked } : doc
+      )
+    }));
+  };
+
+  const renderIdItem = (doc, status) => (
+    <div key={doc.index} className="id-item">
+      <div 
+        className="id-content"
+        onClick={() => navigate(`/documents/${doc.id}?status=${status}`)}
+      >
+        {doc.index}. ID : {doc.id}
+      </div>
+      {isAdmin && (
+        <button
+          className={`block-button ${doc.isBlocked ? 'blocked' : ''}`}
+          onClick={(e) => handleBlock(e, status, doc.index)}
+        >
+          {doc.isBlocked ? 'Unblock' : 'Block'}
+        </button>
+      )}
+    </div>
+  );
+
+
+  return (
+    <div className="document-list">
+      <div className="list-container">
+        <div className="list-header">
+          <h2>Pending</h2>
+          <span className="status-icon pending">⏳</span>
+        </div>
+        <div className="id-list">
+          {documents.pending.map(doc => renderIdItem(doc, 'pending'))}
+        </div>
+      </div>
+
+      
+    </div>
+  );
+};
+
+export default DocumentList;
