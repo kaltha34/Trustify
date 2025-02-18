@@ -1,11 +1,11 @@
 import React, { useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import LoadingSpinner from '../shared/LoadingSpinner';
 import './DocumentList.css';
 
 const DocumentList = () => {
   const navigate = useNavigate();
-  
+  const [isLoading, setIsLoading] = useState(true);
   const [isAdmin] = useState(true); // In real app, this would come from auth context
 
   // Initialize documents state from localStorage or with default values
@@ -28,6 +28,12 @@ const DocumentList = () => {
       }))
     };
   });
+
+  useEffect(() => {
+    setTimeout(() => setIsLoading(false), 1000);
+  }, []);
+
+  
   // Save documents state to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('documentBlockStatus', JSON.stringify(documents));
@@ -64,8 +70,7 @@ const DocumentList = () => {
     </div>
   );
 
-  
-
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="document-list">
