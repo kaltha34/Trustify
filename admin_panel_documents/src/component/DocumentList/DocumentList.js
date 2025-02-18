@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import './DocumentList.css';
@@ -28,6 +28,11 @@ const DocumentList = () => {
       }))
     };
   });
+  // Save documents state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('documentBlockStatus', JSON.stringify(documents));
+  }, [documents]);
+
 
   const handleBlock = (e, status, index) => {
     e.stopPropagation(); // Prevent navigation when clicking block button
@@ -58,6 +63,8 @@ const DocumentList = () => {
       )}
     </div>
   );
+
+  
 
 
   return (
