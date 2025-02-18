@@ -1,47 +1,78 @@
-.Upload-Container h1 {
-  letter-spacing: 1px;
-  font-size: 32px;
-  margin-left: 300px;
-  margin-top: 40px;
+body {
+  font-family: Arial, sans-serif;
 }
-.UploadDoc-Body {
-  border: 2px dashed #ccc;
-  border-radius: 20px;
-  width: 400px;
-  height: 300px;
+
+.container {
+  display: flex;
+  margin-left: 280px;
+}
+
+.upload-section {
+  flex-grow: 1;
   padding: 20px;
+}
+
+.drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  height: 150px;
   text-align: center;
-  margin: 150px auto auto 350px;
-  transition: background-color 0.3s;
+  cursor: copy;
+  margin-bottom: 20px;
 }
 
-.UploadDoc-Body.hover {
-  background-color: #726e6e;
+.highlight {
+  border-color: #007bff;
+}
+
+.upload-label {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
   color: white;
-}
-
-.UploadDoc-Body.hover p,
-label {
-  color: black;
-}
-
-.UploadDoc-Body label {
-  color: blue;
+  border-radius: 5px;
   cursor: pointer;
 }
-.UploadDoc-Body p,
-label {
-  margin-top: 110px;
-  font-size: 20px;
+
+.file-display {
+  margin-bottom: 20px;
 }
 
-.File-Display {
-  margin-left: 900px;
-  margin-top: -330px;
-  width: 300px;
-  height: 300px;
-  border-radius: 30px;
-  letter-spacing: 1px;
-  text-align: center;
-  border: 2px solid white;
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.upload-time {
+  margin-left: 10px; /* Adjust this value to change the space */
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+.upload-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-button:disabled {
+  color: white;
+  background-color: gray;
+  cursor: not-allowed;
 }

@@ -1,84 +1,106 @@
-import React, { useCallback, useState } from "react";
-import "./Upload.css"; // Import the CSS file
+import React, { useState, useCallback } from "react";
+import "./Upload.css"; // Ensure this CSS file is named Upload.css
 
-const UploadDoc = () => {
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+const Upload = () => {
+  const [filesArray, setFilesArray] = useState([]);
+  const [highlight, setHighlight] = useState(false);
 
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.classList.remove("hover");
-    const files = e.dataTransfer.files;
+  const handleDragOver = useCallback((event) => {
+    event.preventDefault();
+    setHighlight(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setHighlight(false);
+  }, []);
+
+  const handleDrop = useCallback((event) => {
+    event.preventDefault();
+    setHighlight(false);
+    const files = Array.from(event.dataTransfer.files);
     handleFiles(files);
   }, []);
 
-  const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.classList.add("hover");
-  }, []);
-
-  const handleDragLeave = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.classList.remove("hover");
-  }, []);
-
   const handleFiles = (files) => {
-    const filesArray = Array.from(files);
-    const newFiles = filesArray.map((file) => ({
+    const validFiles = files.filter((file) => file.type === "application/pdf");
+    if (validFiles.length !== files.length) {
+      alert("Some files were not valid PDFs and were ignored.");
+    }
+    const filesWithTimestamp = validFiles.map((file) => ({
       name: file.name,
-      time: new Date().toLocaleString(),
+      timestamp: new Date().toLocaleString(), // Capture the current timestamp
     }));
-    setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    setFilesArray((prevFiles) => [...prevFiles, ...filesWithTimestamp]);
+  };
+
+  const removeFile = (fileName) => {
+    setFilesArray((prevFiles) =>
+      prevFiles.filter((file) => file.name !== fileName)
+    );
+  };
+
+  const handleFileInputChange = (event) => {
+    const files = Array.from(event.target.files);
+    handleFiles(files);
+    event.target.value = ""; // Clear the input value to allow re-selection of the same file
   };
 
   return (
-    <div className="Dashboard-Container">
-      <div className="Sidebar">Sidebar Content</div>
-      <div className="Main-Content">
-        <div className="Card">
-          <h2>Card 1</h2>
-          <div
-            className="UploadDoc-Body"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onClick={() => document.getElementById("fileElem").click()} // Trigger file input on click
-          >
-            <p>Drag and drop files here</p>
-            <input
-              type="file"
-              id="fileElem"
-              multiple
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={(e) => handleFiles(e.target.files)} // Handle file selection
-            />
-            <label htmlFor="fileElem">or click to select files</label>
-          </div>
-          <div className="File-Display">
-            <h3>Uploaded Files</h3>
-            <ul>
-              {uploadedFiles.map((file, index) => (
-                <li key={index}>
-                  <span>{file.name}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <div className="container">
+      <div className="upload-section">
+        <h2>Upload Documents</h2>
+        <div
+          className={`drop-area ${highlight ? "highlight" : ""}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => document.getElementById("fileElem").click()}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) =>
+            e.key === "Enter" && document.getElementById("fileElem").click()
+          }
+        >
+          <p>Drag & drop files here or click to upload</p>
+          <input
+            type="file"
+            id="fileElem"
+            multiple
+            accept="application/pdf"
+            style={{ display: "none" }}
+            onChange={handleFileInputChange}
+          />
+          <label htmlFor="fileElem" className="upload-label">
+            Upload Files
+          </label>
         </div>
-        <div className="Card">
-          <h2>Card 2</h2>
-          <p>Content for Card 2</p>
+        <div className="file-display">
+          {filesArray.length === 0 ? (
+            <p>No files uploaded</p>
+          ) : (
+            filesArray.map((file, index) => (
+              <div key={index} className="file-item">
+                <span>{file.name}</span>
+                <span className="upload-time">
+                  {" "}
+                  Uploaded on: {file.timestamp}
+                </span>
+                <button
+                  className="close-button"
+                  onClick={() => removeFile(file.name)}
+                >
+                  X
+                </button>
+              </div>
+            ))
+          )}
         </div>
-        <div className="Card">
-          <h2>Card 3</h2>
-          <p>Content for Card 3</p>
-        </div>
+        <button className="upload-button" disabled={filesArray.length === 0}>
+          Upload
+        </button>
       </div>
     </div>
   );
 };
 
-export default UploadDoc;
+export default Upload;
