@@ -1,0 +1,107 @@
+.help-center {
+  margin-left: 250px;
+  padding: 50px;
+}
+
+.help-center-header {
+  text-align: left;
+  margin-bottom: 20px;
+  padding-left: 530px;
+}
+
+.help-content {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 70px;
+}
+
+.form-section {
+  margin-bottom: 20px;
+  margin-top: 70px;
+}
+
+.form-section label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-section input,
+.form-section textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.form-section textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  height: 20px; /* Adjust the height as needed */
+}
+
+.form-section input {
+  border-radius: 20px;
+}
+
+.form-section input:focus,
+.form-section textarea:focus {
+  outline: none;
+  border-color: #004d4d;
+}
+
+
+.faq-section {
+  margin-top: 20px;
+}
+
+.faq-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.faq-section li {
+  margin: 10px 0;
+}
+
+.submit-btn {
+  margin-top: 40px;
+  padding: 10px 20px;
+  background-color: #004d4d;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 250px;
+}
+
+.submit-btn:hover {
+  background-color: #1e6b7b;
+}
+
+.faq-section ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex; /* Use flexbox to display the items horizontally */
+  flex-wrap: wrap; /* Allow wrapping if there are too many items */
+}
+
+.faq-section li {
+  margin: 13px 20px;
+  cursor: pointer;
+  color: #058d94;
+  padding-left: 0px
+}
+
+.faq-section li:hover {
+  text-decoration: underline;
+}
+
+.faq-section li:active {
+  color: #058d94;
+}
