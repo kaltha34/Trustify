@@ -1,0 +1,130 @@
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  margin-top: 15px;
+}
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.profile-info h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+.profile-info p {
+  font-size: 0.88rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #660704;
+  color: white;
+  padding: 10px;
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  flex-direction: column;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  justify-content: space-between; /* Push switch to bottom */
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+  margin-left: 5px;
+}
+
+.menu-link {
+  color: white;
+  text-decoration: none;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.menu-item:hover {
+  background-color: #943333;
+}
+
+.menu-item.active {
+  background-color: black;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.text {
+  font-size: 16px;
+}
+
+.dark-mode {
+  background-color: #272727;
+  color: white;
+}
+
+.dark-mode .menu-item:hover {
+  background-color: #943333;
+}
+
+.dark-mode .menu-item.active {
+  background-color: black;
+}
+
+.theme-toggle-buttons {
+  margin-left: 15px;
+  width: 180px;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  background-color: #272727;
+  margin-bottom: 30px;
+  border-radius: 50px;
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  color: white;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.theme-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+}
+
+.theme-btn.active {
+  background-color:  #660704;
+  border-radius: 50px;
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.6);
+  transform: translateY(2px);
+}
