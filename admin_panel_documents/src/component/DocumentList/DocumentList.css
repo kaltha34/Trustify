@@ -58,6 +58,15 @@
   border: 1px solid var(--border-color);
 }
 
+.id-content {
+  cursor: pointer;
+  flex-grow: 1;
+  color: var(--text-color);
+}
+
+.id-item:hover {
+  background: var(--item-hover);
+}
 
 .block-button {
   padding: 0.5rem 1rem;
@@ -101,4 +110,15 @@
   --border-color: #404040;
 }
 
+/* Dark mode specific overrides */
+.dark-mode .id-content:hover {
+  color: #ffffff;
+}
 
+.dark-mode .block-button {
+  background-color: #ff4d4d;
+}
+
+.dark-mode .block-button.blocked {
+  background-color: #2ecc71;
+}

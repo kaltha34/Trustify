@@ -11,3 +11,46 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.dark-mode {
+  background-color: #272727;
+  color: white;
+}
+
+.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+
+:root {
+  --background-color: #f5f5f5;
+  --text-color: #000000;
+  --card-background: #ffffff;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --item-hover: #e0e0e0;
+  --item-background: #f5f5f5;
+}
+
+/* Dark mode styles */
+.dark-mode {
+  --background-color: #1a1a1a;
+  --text-color: #ffffff;
+  --card-background: #2d2d2d;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --item-hover: #3d3d3d;
+  --item-background: #333333;
+}
+
+/* Apply variables to elements */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.main-content {
+  background-color: var(--background-color);
+  transition: background-color 0.3s;
+}
