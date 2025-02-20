@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import LoadingSpinner from '../shared/LoadingSpinner';
-
+import PDFIcon from '../shared/PDFIcon';
 import './DocumentDetails.css';
 
 const DocumentDetails = () => {
@@ -26,7 +26,24 @@ const DocumentDetails = () => {
         </span>
       </div>
 
-      
+      <div className="user-profile">
+        <div className="profile-picture" />
+        <div className="user-info">
+          <div>ID : 12345678</div>
+          <div>Name : Kalhara Thabrew</div>
+          <div>Email : kalhara.s.thabrew@gmail.com</div>
+        </div>
+      </div>
+
+      <div className="documents-grid">
+        {['Birth Certificate', 'NIC', 'Passport'].map((doc, index) => (
+          <div key={index} className="document-card">
+            <PDFIcon />
+            <div className="document-name">{doc}</div>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 };
