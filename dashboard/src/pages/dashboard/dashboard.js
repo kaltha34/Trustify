@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import { Facebook, Linkedin, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
-import { FaUserShield } from "react-icons/fa";
+import { FaUserShield, FaRegBell } from "react-icons/fa";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
@@ -28,7 +28,7 @@ const Dashboard = () => {
     fetch("http://localhost:5000/api/notifications")
       .then((response) => response.json())
       .then((data) => {
-        setNotifications(data.slice(0, 3));
+        setNotifications(data.slice(0, 6));
         setLoading(false);
       })
       .catch((error) => {
@@ -82,7 +82,7 @@ const Dashboard = () => {
         {/* Verification Status Section */}
         <div className="Verifications">
           <div className="Verification-content">
-            <h1>Total Verifications</h1>
+            <h2>Verifications</h2>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Select Date"
@@ -117,7 +117,7 @@ const Dashboard = () => {
                 <ul>
                   {notifications.map((notification, index) => (
                     <li key={index} className="notification-item">
-                      <p>{notification.message}</p>
+                      <p className="notify">{notification.message}</p>
                       <span className="notification-date">
                         {notification.date}
                       </span>

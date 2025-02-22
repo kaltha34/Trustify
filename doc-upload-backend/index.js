@@ -8,19 +8,17 @@ const { Server } = require("socket.io");
 const notificationRoutes = require("./routes/notificationRoutes");
 
 const app = express();
-const server = http.createServer(app); // Create an HTTP server
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Your frontend URL
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
 
-// Middleware
 app.use(cors());
-app.use(express.json()); // For parsing application/json
+app.use(express.json());
 
-// Use the MONGO_URI from the .env file
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
@@ -28,7 +26,6 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
-// Pass io to notification routes for real-time updates
 app.use(
   "/api",
   (req, res, next) => {
