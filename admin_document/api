@@ -1,0 +1,5 @@
+✅ Fetch Users → GET /api/users
+✅ Fetch User by ID → GET /api/users/:userId
+✅ Approve (Unblock) User → PUT /api/users/approve/:userId
+✅ Block User → PUT /api/users/block/:userId
+
