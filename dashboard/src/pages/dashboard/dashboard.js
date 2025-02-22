@@ -1,14 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import { Facebook, Linkedin, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaUserShield } from "react-icons/fa";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import TextField from "@mui/material/TextField";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:5000", {
+  transports: ["websocket", "polling"], // Ensure a stable connection
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
+});
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const [active] = useState("12");
+  const [inactive] = useState("17");
+  const [inprogress] = useState("24");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/notifications")
+      .then((response) => response.json())
+      .then((data) => {
+        setNotifications(data.slice(0, 3));
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching notifications:", error);
+        setLoading(false);
+      });
+    // Listen for socket connection
+    socket.on("connect", () => {
+      console.log("✅ Socket.io Connected:", socket.id);
+    });
+
+    // Listen for new notifications from server
+    socket.on("newNotification", (newNotification) => {
+      console.log("📩 New notification received:", newNotification);
+      setNotifications((prev) => [newNotification, ...prev]);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("❌ Socket.io Disconnected");
+    });
+
+    return () => {
+      socket.off("newNotification");
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, []);
+
   return (
     <div className="Dashboard-container">
       <h1>Dashboard</h1>
       <div className="Dashboard-body">
+        {/* Identity Verification Section */}
         <div className="Verifications">
           <div className="Verification-content">
             <FaUserShield className="image" size={90} color="blue" />
@@ -26,21 +79,65 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Verification Status Section */}
         <div className="Verifications">
           <div className="Verification-content">
-            <h2>Card 2</h2>
-            <p>Additional card content goes here.</p>
+            <h1>Total Verifications</h1>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Select Date"
+                value={selectedDate}
+                onChange={(newValue) => setSelectedDate(newValue)}
+                renderInput={(params) => <TextField {...params} fullWidth />}
+              />
+            </LocalizationProvider>
+            <div className="status">
+              <span className="dots active"></span>
+              <p>Active : {active}</p>
+            </div>
+            <div className="status">
+              <span className="dots inactive"></span>
+              <p>Inactive : {inactive}</p>
+            </div>
+            <div className="status">
+              <span className="dots in-progress"></span>
+              <p>In Progress : {inprogress}</p>
+            </div>
           </div>
         </div>
 
+        {/* Notifications Section */}
         <div className="Verifications">
           <div className="Verification-content">
-            <h2>Card 3</h2>
-            <p>More details in this box.</p>
+            <h2>Notifications</h2>
+            <div className="Notification-Center">
+              {loading ? (
+                <p>Loading notifications...</p>
+              ) : notifications.length > 0 ? (
+                <ul>
+                  {notifications.map((notification, index) => (
+                    <li key={index} className="notification-item">
+                      <p>{notification.message}</p>
+                      <span className="notification-date">
+                        {notification.date}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No new notifications</p>
+              )}
+            </div>
+            <div className="recent">
+              <Link to="/inbox">
+                <p>Show Notifications</p>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Footer */}
       <div className="Dashboard-Footer">
         <div className="footer-logo">TRUSTIFY</div>
         <div className="footer-sections">
@@ -90,19 +187,13 @@ const Dashboard = () => {
             <h4>Social</h4>
             <div className="social-icons">
               <a href="#">
-                <i className="fab fa-facebook">
-                  <Facebook size={24} />
-                </i>
+                <Facebook size={24} />
               </a>
               <a href="#">
-                <i className="fab fa-linkedin">
-                  <Linkedin size={24} />
-                </i>
+                <Linkedin size={24} />
               </a>
               <a href="#">
-                <i className="fab fa-instagram">
-                  <Instagram size={24} />
-                </i>
+                <Instagram size={24} />
               </a>
             </div>
           </div>
