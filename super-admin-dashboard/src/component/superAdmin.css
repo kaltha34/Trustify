@@ -1,0 +1,159 @@
+.SuperAdminDashboard {
+  background-color: rgb(80, 80, 80);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.SuperAdmin-content {
+  width: 80%;
+}
+
+.SuperAdmin-content h1 {
+  color: white;
+  font-size: 32px;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.Admins {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  position: relative;
+  text-align: left;
+}
+
+.Added-admins {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.search-bar {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  width: 40%;
+  padding: 8px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.highlight {
+  font-weight: bolder;
+}
+.added-admin-list,
+.admin-list {
+  top: 50px;
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.no-users {
+  color: #b91111;
+  font-size: 18px;
+
+  font-weight: bold;
+}
+
+.added-admin-item,
+.admin-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+.assign-btn {
+  background-color: #4caf50; /* Green color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 50px;
+  margin-left: 250px;
+  cursor: pointer;
+}
+
+.assign-btn:hover {
+  background-color: #45a049;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+button {
+  border-radius: 30px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #545252;
+  color: white;
+}
+
+.assign-btn {
+  background-color: #4caf50; /* Green color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.model-yes {
+  background-color: rgb(41, 136, 41);
+  color: white;
+}
+
+.model-cancel {
+  background-color: rgb(189, 50, 50);
+  color: white;
+}
+.no-results {
+  color: red;
+
+  margin-top: 10px;
+}
+.clear-icon {
+  position: absolute;
+  right: 50px;
+  top: 45px;
+  cursor: pointer;
+  color: #ff0000;
+  font-size: 12px;
+}
+
+.clear-icon:hover {
+  color: #333;
+}
