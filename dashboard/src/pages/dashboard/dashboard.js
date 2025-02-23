@@ -1,34 +1,47 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
-import { Facebook, Linkedin, Instagram } from "lucide-react";
+import { Facebook, Linkedin, Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import { FaUserShield, FaRegBell } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FaUserShield, FaExclamationTriangle } from "react-icons/fa";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000", {
-  transports: ["websocket", "polling"], // Ensure a stable connection
-  reconnection: true,
-  reconnectionAttempts: 5,
-  reconnectionDelay: 1000,
-});
-
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [counts, setCounts] = useState({
+    active: 0,
+    inactive: 0,
+    inprogress: 0,
+  });
 
   const [active] = useState("12");
   const [inactive] = useState("17");
   const [inprogress] = useState("24");
 
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      setCounts({ active, inactive, inprogress });
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [active, inactive, inprogress]);
+
+  const socket = io("http://localhost:5000", {
+    transports: ["websocket", "polling"],
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000,
+  });
+
+  useEffect(() => {
     fetch("http://localhost:5000/api/notifications")
       .then((response) => response.json())
       .then((data) => {
-        setNotifications(data.slice(0, 6));
+        setNotifications(data.slice(0, 5));
         setLoading(false);
       })
       .catch((error) => {
@@ -117,6 +130,7 @@ const Dashboard = () => {
                 <ul>
                   {notifications.map((notification, index) => (
                     <li key={index} className="notification-item">
+                      <Mail className="notification-icon" />
                       <p className="notify">{notification.message}</p>
                       <span className="notification-date">
                         {notification.date}
@@ -125,12 +139,16 @@ const Dashboard = () => {
                   ))}
                 </ul>
               ) : (
-                <p>No new notifications</p>
+                <p>
+                  {" "}
+                  <FaExclamationTriangle className="notification-icon" /> No new
+                  notifications
+                </p>
               )}
             </div>
             <div className="recent">
               <Link to="/inbox">
-                <p>Show Notifications</p>
+                <p>Show More</p>
               </Link>
             </div>
           </div>

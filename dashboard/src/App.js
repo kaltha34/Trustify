@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard/dashboard";
 import SideBar from "./Components/Sidebar/Sidebar";
 import UploadDoc from "./pages/UploadDoc/Upload";

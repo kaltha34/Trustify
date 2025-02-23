@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from "react";
-import "./Upload.css"; // Ensure this CSS file is named Upload.css
+import { useNavigate } from "react-router-dom";
+import "./Upload.css";
+import { ArrowLeft } from "lucide-react";
 
 const Upload = () => {
   const [filesArray, setFilesArray] = useState([]);
@@ -42,12 +44,18 @@ const Upload = () => {
   const handleFileInputChange = (event) => {
     const files = Array.from(event.target.files);
     handleFiles(files);
-    event.target.value = ""; // Clear the input value to allow re-selection of the same file
+    event.target.value = "";
   };
 
   return (
     <div className="container">
       <div className="upload-section">
+        {" "}
+        <ArrowLeft
+          size={24}
+          onClick={() => window.history.back()}
+          className="backbutton"
+        />
         <h2>Upload Documents</h2>
         <div
           className={`drop-area ${highlight ? "highlight" : ""}`}
@@ -70,9 +78,7 @@ const Upload = () => {
             style={{ display: "none" }}
             onChange={handleFileInputChange}
           />
-          <label htmlFor="fileElem" className="upload-label">
-            Upload Files
-          </label>
+          <label className="upload-label">Upload Files</label>
         </div>
         <div className="file-display">
           {filesArray.length === 0 ? (
