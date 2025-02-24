@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 const Modal = ({ email, onClose, onConfirm }) => (
   <div className="modal-overlay">
     <div className="modal">
-      <h2>
+      <h2 className="modal-text ">
         Are you sure <br />
         you want to assign admin to <br />
         {email}?
@@ -49,7 +49,7 @@ const SuperAdmin = () => {
           throw new Error("Failed to fetch admins");
         }
         const data = await response.json();
-        console.log("Fetched admins from API:", data); // Debugging
+        console.log("Fetched admins from API:", data);
 
         if (!Array.isArray(data)) {
           throw new Error("API response is not an array");
@@ -64,32 +64,46 @@ const SuperAdmin = () => {
     fetchUsers();
   }, []);
 
-  // Handle Assign Admin Button Click
   const handleAssignClick = (email) => {
     setSelectedEmail(email);
     setModalVisible(true);
   };
 
-  // Handle closing modal
   const closeModal = () => {
     setModalVisible(false);
     setSelectedEmail(null);
   };
 
-  // Confirm assigning admin (move from "Admin List" to "Added Admins")
-  const handleConfirmAssign = (email) => {
-    if (!admins.includes(email)) {
-      setAdmins([...admins, email]);
+  const handleConfirmAssign = async (email) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/assignAdmin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to assign admin");
+      }
+
+      setUsers(users.filter((user) => user.email !== email));
+
+      const adminResponse = await fetch("http://localhost:5000/api/admins");
+      const updatedAdmins = await adminResponse.json();
+      setAdmins(updatedAdmins);
+
+      closeModal();
+    } catch (error) {
+      console.error("Error assigning admin:", error);
     }
-    closeModal();
   };
 
-  // Clear search input
   const clearSearch = () => {
     setSearchTerm("");
   };
 
-  // Function to highlight search term in the email
   const getHighlightedText = (email, query) => {
     if (!query) return email;
     const parts = email.split(new RegExp(`(${query})`, "gi"));

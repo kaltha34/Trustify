@@ -7,7 +7,7 @@
 }
 
 .SuperAdmin-content {
-  width: 80%;
+  width: 90%;
 }
 
 .SuperAdmin-content h1 {
@@ -84,7 +84,7 @@
   border: none;
   padding: 5px 10px;
   border-radius: 50px;
-  margin-left: 250px;
+  margin-left: 100px;
   cursor: pointer;
 }
 
@@ -112,6 +112,9 @@
   text-align: center;
 }
 
+.modal-text {
+  font-weight: bold;
+}
 button {
   border-radius: 30px;
   padding: 10px 20px;
