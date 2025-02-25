@@ -26,6 +26,17 @@
   font-weight: bold;
 }
 
+.dark-mode .form-section input,
+.dark-mode .form-section textarea {
+ border: 1px solid white;
+ background-color: rgb(37, 35, 35);
+  color: white;
+}
+
+
+.dark-mode .faq-section input::placeholder{
+  color: white;
+}
 .form-section input,
 .form-section textarea {
   width: 100%;
@@ -105,3 +116,5 @@
 .faq-section li:active {
   color: #058d94;
 }
+
+
