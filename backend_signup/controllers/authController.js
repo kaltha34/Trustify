@@ -67,15 +67,13 @@ exports.signup = async (req, res) => {
   }
 };
 
-// **Login Function**
-exports.login = async (req, res) => {
-  const { email, password, role } = req.body;
 
+// **User Login Function**
+exports.userLogin = async (req, res) => {
+  const { email, password } = req.body;
+  
   try {
-    const user = role === 'admin' 
-      ? await Admin.findOne({ email }) 
-      : await User.findOne({ email });
-
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -86,20 +84,65 @@ exports.login = async (req, res) => {
     }
 
     const otp = generateOTP();
+    user.otp = otp;
+    user.otpTimestamp = Date.now();
+    await user.save();
 
-    await sendOTP(user, otp); // Send OTP using SendGrid
+    await sendOTP(user, otp);
 
     const token = jwt.sign(
-      { id: user._id, role: role },
+      { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    socket.emit('notification', { message: `${role} logged in successfully` });
-
-    res.status(200).json({ message: 'OTP sent to email', otp, token });
+    res.status(200).json({ message: 'OTP sent to email', token });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+
+// **Admin Login Function**
+exports.adminLogin = async (req, res) => {
+  const { email, password } = req.body;
+  
+  try {
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const otp = generateOTP();
+    admin.otp = otp;
+    admin.otpTimestamp = Date.now();
+    await admin.save();
+
+    // Send OTP email and wait for completion
+    await sendOTP(admin, otp);
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: admin._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // Send final response after OTP is sent
+    return res.status(200).json({ 
+      message: 'OTP sent to email', 
+      token,
+      
+    });
+
+  } catch (error) {
+    console.error('Error in adminLogin:', error.message);
+    return res.status(500).json({ error: error.message });
   }
 };
 
