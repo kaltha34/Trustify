@@ -88,6 +88,16 @@
   cursor: pointer;
 }
 
+.remove-btn {
+  background-color: #bb0d0d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 50px;
+  margin-left: 100px;
+  cursor: pointer;
+}
+
 .assign-btn:hover {
   background-color: #45a049;
 }
