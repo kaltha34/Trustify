@@ -2,7 +2,6 @@ import "./superAdmin.css";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
-// Modal Component for Assign Admin
 const ModalAssign = ({ email, onClose, onConfirm }) => (
   <div className="modal-overlay">
     <div className="modal">
@@ -21,7 +20,6 @@ const ModalAssign = ({ email, onClose, onConfirm }) => (
   </div>
 );
 
-// Modal Component for Remove Admin
 const ModalRemove = ({ email, onClose, onConfirm }) => (
   <div className="modal-overlay">
     <div className="modal">
@@ -47,22 +45,40 @@ const SuperAdmin = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [removeModalVisible, setRemoveModalVisible] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState(null);
+  const [superAdmin, setSuperAdmin] = useState(null);
 
-  // Fetch users and admins
+  //debugging console
+  useEffect(() => {
+    console.log("Users:", users);
+    console.log("Admins:", admins);
+  }, [users, admins]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [usersRes, adminsRes] = await Promise.all([
+        const [usersRes, adminsRes, superAdminRes] = await Promise.all([
           fetch("http://localhost:5000/api/users/regular"),
           fetch("http://localhost:5000/api/admins"),
+          fetch("http://localhost:5000/api/super-admin"),
         ]);
 
-        if (!usersRes.ok || !adminsRes.ok) {
+        if (!usersRes.ok || !adminsRes.ok || !superAdminRes.ok) {
           throw new Error("Failed to fetch data");
         }
 
-        setUsers(await usersRes.json());
-        setAdmins(await adminsRes.json());
+        let usersData = await usersRes.json();
+        const adminData = await adminsRes.json();
+        const superAdminData = await superAdminRes.json();
+
+        setUsers(usersData);
+        setSuperAdmin(superAdminData);
+
+        // Ensure the super admin is only added once
+        const uniqueAdmins = [superAdminData, ...adminData].filter(
+          (admin, index, self) =>
+            index === self.findIndex((a) => a.email === admin.email)
+        );
+        setAdmins(uniqueAdmins);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -91,7 +107,6 @@ const SuperAdmin = () => {
     setSelectedEmail(null);
   };
 
-  // Assign Admin
   const handleConfirmAssign = async (email) => {
     try {
       const response = await fetch("http://localhost:5000/api/assignAdmin", {
@@ -106,11 +121,10 @@ const SuperAdmin = () => {
         throw new Error("Failed to assign admin");
       }
 
-      setUsers(users.filter((user) => user.email !== email));
-
       const updatedAdminsRes = await fetch("http://localhost:5000/api/admins");
       if (updatedAdminsRes.ok) {
-        setAdmins(await updatedAdminsRes.json());
+        const updatedAdmins = await updatedAdminsRes.json();
+        setAdmins(updatedAdmins);
       }
 
       closeModal();
@@ -119,7 +133,6 @@ const SuperAdmin = () => {
     }
   };
 
-  // Remove Admin
   const handleConfirmRemove = async (email) => {
     try {
       const response = await fetch("http://localhost:5000/api/removeAdmin", {
@@ -194,20 +207,35 @@ const SuperAdmin = () => {
             ) : (
               <ul className="admin-list">
                 {users
-                  .filter((user) =>
-                    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+                  .filter(
+                    (user) =>
+                      user.email
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) &&
+                      user.email !== superAdmin?.email
                   )
-                  .map((user, index) => (
-                    <li key={index} className="admin-item">
-                      {getHighlightedText(user.email, searchTerm)}
-                      <button
-                        className="assign-btn"
-                        onClick={() => handleAssignClick(user.email)}
-                      >
-                        Assign Admin
-                      </button>
-                    </li>
-                  ))}
+                  .map((user, index) => {
+                    const isAdmin = admins.some(
+                      (admin) => admin.email === user.email
+                    );
+
+                    return (
+                      <li key={index} className="admin-item">
+                        {getHighlightedText(user.email, searchTerm)}
+                        <button
+                          className="assign-btn"
+                          onClick={() => handleAssignClick(user.email)}
+                          disabled={isAdmin}
+                          style={{
+                            backgroundColor: isAdmin ? "#ccc" : "#4caf50",
+                            cursor: isAdmin ? "not-allowed" : "pointer",
+                          }}
+                        >
+                          {isAdmin ? "Already Admin" : "Click to Assign"}
+                        </button>
+                      </li>
+                    );
+                  })}
               </ul>
             )}
           </div>
@@ -220,12 +248,17 @@ const SuperAdmin = () => {
                 admins.map((admin, index) => (
                   <li key={index} className="added-admin-item">
                     {admin.email}
-                    <button
-                      className="remove-btn"
-                      onClick={() => handleRemoveClick(admin.email)}
-                    >
-                      Remove Admin
-                    </button>
+                    {admin.email === superAdmin?.email && (
+                      <span className="super-admin-tag">Super Admin</span>
+                    )}
+                    {admin.email !== superAdmin?.email && (
+                      <button
+                        className="remove-btn"
+                        onClick={() => handleRemoveClick(admin.email)}
+                      >
+                        Click to Remove
+                      </button>
+                    )}
                   </li>
                 ))
               ) : (
@@ -236,7 +269,6 @@ const SuperAdmin = () => {
         </div>
       </div>
 
-      {/* Render the modals when visible */}
       {modalVisible && (
         <ModalAssign
           email={selectedEmail}
