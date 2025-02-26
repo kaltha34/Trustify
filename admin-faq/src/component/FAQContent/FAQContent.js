@@ -21,22 +21,26 @@ const FAQContent = () => {
     <div className="faq-container">
       <h2>FAQ PANEL</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="faq-input"
-          placeholder="Question..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          className="faq-input"
-          placeholder="Answer..."
-          value={additionalInfo}
-          onChange={(e) => setAdditionalInfo(e.target.value)}
-          required
-        />
+        <div className="input-group">
+          <input
+            type="text"
+            className="faq-input"
+            placeholder="Question..."
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <input
+            type="text"
+            className="faq-input"
+            placeholder="Answer..."
+            value={additionalInfo}
+            onChange={(e) => setAdditionalInfo(e.target.value)}
+            required
+          />
+        </div>
         <button type="submit" className="faq-submit-btn">
           Submit
         </button>
