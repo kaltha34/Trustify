@@ -2,7 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const Admin = require('../models/adminModel');
+const Insights = require('../models/Insights'); // Added import
 const sgMail = require('@sendgrid/mail');
+const sendFraudAlert = require("../utils/sendMail"); // Ensure correct path
 require('dotenv').config();
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -29,6 +31,9 @@ const sendOTP = async (user, otp) => {
   }
 };
 
+// Track failed login attempts
+const failedLoginAttempts = {};
+
 // **User Signup Function**
 exports.userSignup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -42,7 +47,6 @@ exports.userSignup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
-    console.log("User registered successfully:", newUser);
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
@@ -63,7 +67,6 @@ exports.adminSignup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newAdmin = new Admin({ name, email, password: hashedPassword });
     await newAdmin.save();
-    console.log("Admin registered successfully:", newAdmin);
 
     res.status(201).json({ message: 'Admin registered successfully' });
   } catch (error) {
@@ -74,17 +77,30 @@ exports.adminSignup = async (req, res) => {
 // **User Login Function**
 exports.userLogin = async (req, res) => {
   const { email, password } = req.body;
-  
+
+  failedLoginAttempts[email] = failedLoginAttempts[email] || 0;
+
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      failedLoginAttempts[email]++;
+      return res.status(404).json({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      failedLoginAttempts[email]++;
+
+      if (failedLoginAttempts[email] >= 5) {
+        await sendFraudAlert(email);
+        await Insights.findOneAndUpdate({}, { $inc: { fraudAlerts: 1 } }, { upsert: true });
+        failedLoginAttempts[email] = 0;
+      }
+
+      return res.status(400).json({ message: "Invalid credentials" });
     }
+
+    failedLoginAttempts[email] = 0;
 
     const otp = generateOTP();
     user.otp = otp;
@@ -93,62 +109,57 @@ exports.userLogin = async (req, res) => {
 
     await sendOTP(user, otp);
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    res.status(200).json({ message: 'OTP sent to email', token });
+    res.status(200).json({ message: "OTP sent to email", token });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-
 // **Admin Login Function**
 exports.adminLogin = async (req, res) => {
   const { email, password } = req.body;
-  
+
+  failedLoginAttempts[email] = failedLoginAttempts[email] || 0;
+
   try {
     const admin = await Admin.findOne({ email });
     if (!admin) {
-      return res.status(404).json({ message: 'Admin not found' });
+      failedLoginAttempts[email]++;
+      return res.status(404).json({ message: "Admin not found" });
     }
 
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      failedLoginAttempts[email]++;
+
+      if (failedLoginAttempts[email] >= 5) {
+        await sendFraudAlert(email);
+        await Insights.findOneAndUpdate({}, { $inc: { fraudAlerts: 1 } }, { upsert: true });
+        failedLoginAttempts[email] = 0;
+      }
+
+      return res.status(400).json({ message: "Invalid credentials" });
     }
+
+    failedLoginAttempts[email] = 0;
 
     const otp = generateOTP();
     admin.otp = otp;
     admin.otpTimestamp = Date.now();
     await admin.save();
 
-    // Send OTP email and wait for completion
     await sendOTP(admin, otp);
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: admin._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    // Send final response after OTP is sent
-    return res.status(200).json({ 
-      message: 'OTP sent to email', 
-      token,
-      
-    });
-
+    return res.status(200).json({ message: "OTP sent to email", token });
   } catch (error) {
-    console.error('Error in adminLogin:', error.message);
+    console.error("Error in adminLogin:", error.message);
     return res.status(500).json({ error: error.message });
   }
 };
-
 
 // **Verify OTP Function**
 exports.verifyOTP = async (req, res) => {
@@ -186,18 +197,20 @@ exports.verifyOTP = async (req, res) => {
     res.status(500).json({ message: 'Error verifying OTP.' });
   }
 };
-//admin profile for admin dashboard
+
+
+// **Admin Profile Function**
 exports.AdminProfile = async (req, res) => {
   try {
-      const adminId = req.user.id; // Extracted from authMiddleware
-      const admin = await Admin.findById(adminId);
+    const adminId = req.user.id;
+    const admin = await Admin.findById(adminId);
 
-      if (!admin) {
-          return res.status(404).json({ message: "Admin not found" });
-      }
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
 
-      res.json(admin);
+    res.json(admin);
   } catch (error) {
-      res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
