@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./record.css"; // Import the Record CSS file
 
 const Record = () => {
@@ -16,30 +16,33 @@ const Record = () => {
     <div className="record-container">
       <h2>Your Identity Verification History</h2>
 
-       {/* Approved Requests Section with Dropdown */}
-    <div className="record-section">
-      <h3 
-        className="record-title" 
-        onClick={() => setIsApprovedOpen(!isApprovedOpen)}
-      >
-        ✅ Approved Requests
-        <span className={`arrow-icon ${isApprovedOpen ? "open" : ""}`}>▼</span>
-       </h3>
-  
-      {isApprovedOpen && (
-        <div className="approved-requests-dropdown">
-          <p>Government or business approvals.</p>
-          <ul>
-            <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
-            <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
-            <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
-          </ul>
-        </div>
-      )}
-    </div>
+      {/* Approved Requests Section with Dropdown */}
+      <div className="record-section">
+        <h3 
+          className="record-title" 
+          onClick={() => setIsApprovedOpen(!isApprovedOpen)}
+        >
+          ✅ Approved Requests
+          <span className={`arrow-icon ${isApprovedOpen ? 'open' : ''}`}>▼</span>
+        </h3>
 
-       {/* Pending Requests Section with Dropdown */}
-       <div className="record-section">
+        {isApprovedOpen && (
+          <div className="approved-requests-dropdown">
+            <p>Government or business approvals.</p>
+            <ul>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+            </ul>
+          </div>
+        )}
+      </div>
+    
+
+
+
+      {/* Pending Requests Section with Dropdown */}
+      <div className="record-section">
         <h3 className="record-title" onClick={() => setIsPendingOpen(!isPendingOpen)}>
           ⏳ Pending Requests
           <span className={`arrow-icon ${isApprovedOpen ? "open" : ""}`}>▼</span>
@@ -48,15 +51,16 @@ const Record = () => {
           <div className="pending-requests-dropdown">
             <p>Requests awaiting verification.</p>
             <ul>
-              <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
-              <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
-              <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
             </ul>
           </div>
         )}
       </div>
 
-         {/* Revoked Access Section with Dropdown */}
+
+      {/* Revoked Access Section with Dropdown */}
       <div className="record-section">
         <h3 className="record-title" onClick={() => setIsRevokedOpen(!isRevokedOpen)}>
           ❌ Revoked Access
@@ -73,7 +77,8 @@ const Record = () => {
           </div>
         )}
       </div>
-       {/* Audit Log Section with Dropdown */}
+
+      {/* Audit Log Section with Dropdown */}
       <div className="record-section">
         <h3 className="record-title" onClick={() => setIsAuditLogOpen(!isAuditLogOpen)}>
           📜 Audit Log
@@ -115,26 +120,26 @@ const Record = () => {
       )}
     </div>
 
-      <div className="record-section">
-        <h3 
-          className="record-title" 
-          onClick={() => setIsDownloadOpen(!isDownloadOpen)}
-        >
-          ⬇️ Download Verified Identity Records
-          <span className={`arrow-icon ${isDownloadOpen ? "open" : ""}`}>▼</span>
-        </h3>
-        <p>Download government-verified identity documents.</p>
+    <div className="record-section">
+      <h3 
+        className="record-title" 
+        onClick={() => setIsDownloadOpen(!isDownloadOpen)}
+      >
+        ⬇️ Download Verified Identity Records
+        <span className={`arrow-icon ${isDownloadOpen ? "open" : ""}`}>▼</span>
+      </h3>
+      <p>Download government-verified identity documents.</p>
 
-        {isDownloadOpen && (
-          <div className="download-dropdown">
-            <ul>
-              <li><a href="/path/to/file2.pdf" download>file   📂</a></li>
-              <li><a href="/path/to/file3.pdf" download>file   📂</a></li>
-              <li><a href="/path/to/file4.pdf" download>file   📂</a></li>
-            </ul>
-          </div>
-        )}
-      </div>
+      {isDownloadOpen && (
+        <div className="download-dropdown">
+          <ul>
+            <li><a href="/path/to/file2.pdf" download>file 📂</a></li>
+            <li><a href="/path/to/file3.pdf" download>file 📂</a></li>
+            <li><a href="/path/to/file4.pdf" download>file  📂</a></li>
+          </ul>
+        </div>
+      )}
+    </div>
     </div>
   );
 };
