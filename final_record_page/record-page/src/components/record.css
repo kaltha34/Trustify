@@ -32,3 +32,36 @@
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
   }
+  
+  /* Customize alternate section background colors */
+  .record-section:nth-child(odd) {
+    background-color: #f7f7f7;
+  }
+  
+  .record-section:nth-child(even) {
+    background-color: #fff;
+  }
+  
+  /* Add hover effect on record sections */
+  .record-section:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Dropdown styling for each section */
+  .approved-requests-dropdown, .pending-requests-dropdown, .revoked-access-dropdown, .audit-log-dropdown, .documents-dropdown, .download-dropdown {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #151414;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    display: block;
+    max-height: 300px;  /* Optional, limits the dropdown height */
+    overflow-y: auto;  /* Scrollable if content overflows */
+    transition: all 0.3s ease;  /* Smooth transition */
+  }
+  
+  .record-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
