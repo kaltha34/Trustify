@@ -66,22 +66,67 @@ const Record = () => {
           </div>
         )}
       </div>
-       <div className="record-section">
-        <h3 className="record-title">📜 Audit Log</h3>
-        <p>Full history of when and where your identity was used.</p>
+       {/* Audit Log Section with Dropdown */}
+      <div className="record-section">
+        <h3 className="record-title" onClick={() => setIsAuditLogOpen(!isAuditLogOpen)}>
+          📜 Audit Log
+          <span className={`arrow-icon ${isApprovedOpen ? "open" : ""}`}>▼</span>
+        </h3>
+        {isAuditLogOpen && (
+          <div className="audit-log-dropdown">
+            <p>Full history of when and where your identity was used.</p>
+            <ul>
+              <li>file7.pdf</li>
+              <li>file8.pdf</li>
+              <li>file9.pdf</li>
+            </ul>
+          </div>
+        )}
       </div>
       
 
       <h2>Document Vault</h2>
 
       <div className="record-section">
-        <h3 className="record-title">📂 Manage Uploaded Documents</h3>
-        <p>View and manage uploaded documents (NIC, Passport, Utility Bills).</p>
-      </div>
+      <h3 
+        className="record-title" 
+        onClick={() => setIsDocumentsOpen(!isDocumentsOpen)}
+      >
+        📂 Manage Uploaded Documents
+        <span className={`arrow-icon ${isDocumentsOpen ? "open" : ""}`}>▼</span>
+      </h3>
+      <p>View and manage uploaded documents (NIC, Passport, Utility Bills).</p>
+
+      {isDocumentsOpen && (
+        <div className="documents-dropdown">
+          <ul>
+            <li>file1.pdf   📂</li>
+            <li>file2.pdf   📂</li>
+            <li>file3.pdf   📂</li>
+          </ul>
+        </div>
+      )}
+    </div>
 
       <div className="record-section">
-        <h3 className="record-title">⬇️ Download Verified Identity Records</h3>
+        <h3 
+          className="record-title" 
+          onClick={() => setIsDownloadOpen(!isDownloadOpen)}
+        >
+          ⬇️ Download Verified Identity Records
+          <span className={`arrow-icon ${isDownloadOpen ? "open" : ""}`}>▼</span>
+        </h3>
         <p>Download government-verified identity documents.</p>
+
+        {isDownloadOpen && (
+          <div className="download-dropdown">
+            <ul>
+              <li><a href="/path/to/file2.pdf" download>file2.pdf   📂</a></li>
+              <li><a href="/path/to/file3.pdf" download>file3.pdf   📂</a></li>
+              <li><a href="/path/to/file4.pdf" download>file4.pdf   📂</a></li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
