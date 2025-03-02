@@ -4,7 +4,8 @@ const User = require('../models/userModel');
 const Admin = require('../models/adminModel');
 
 const sgMail = require('@sendgrid/mail');
-const sendFraudAlert = require("../utils/sendMail"); // Ensure correct path
+const sendFraudAlert = require("../utils/sendMail"); 
+const sendResetPasswordOTP = require("../utils/sendResetPasswordOTP");
 require('dotenv').config();
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -221,21 +222,24 @@ exports.forgotPassword = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Generate a 6-digit OTP
     const otp = generateOTP();
     user.otp = otp;
     user.otpTimestamp = Date.now();
     await user.save();
 
-    // Send OTP to user via email
-    await sendOTP(user, otp);
+    // Send reset password OTP email
+    await sendResetPasswordOTP(user.email, otp);
 
-    res.status(200).json({ message: "OTP sent to email" });
+    res.status(200).json({ message: "Reset password OTP sent successfully." });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error in forgotPassword:", error);
+    res.status(500).json({ message: "Error sending reset password OTP." });
   }
 };
 
