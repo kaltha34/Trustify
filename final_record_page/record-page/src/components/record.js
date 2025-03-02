@@ -5,6 +5,10 @@ const Record = () => {
   const [isApprovedOpen, setIsApprovedOpen] = useState(false);
   const [isPendingOpen, setIsPendingOpen] = useState(false);
   const [isRevokedOpen, setIsRevokedOpen] = useState(false);
+  const handleFileClick = (fileName) => {
+    // Logic to open a blank page (this could be a new window or route to a new page)
+    window.open('', '_blank');  // Opens a blank page
+  };
   return (
     <div className="record-container">
       <h2>Your Identity Verification History</h2>
@@ -23,9 +27,9 @@ const Record = () => {
         <div className="approved-requests-dropdown">
           <p>Government or business approvals.</p>
           <ul>
-            <li>file1.pdf</li>
-            <li>file2.pdf</li>
-            <li>file3.pdf</li>
+            <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
+            <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
+            <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
           </ul>
         </div>
       )}
@@ -41,9 +45,9 @@ const Record = () => {
           <div className="pending-requests-dropdown">
             <p>Requests awaiting verification.</p>
             <ul>
-              <li>file4.pdf</li>
-              <li>file5.pdf</li>
-              <li>file6.pdf</li>
+              <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={()=> handleFileClick('file1.pdf')}>file📂</li>
             </ul>
           </div>
         )}
@@ -59,9 +63,9 @@ const Record = () => {
           <div className="revoked-access-dropdown">
             <p>Identity data access revoked by you.</p>
             <ul>
-              <li>file7.pdf</li>
-              <li>file8.pdf</li>
-              <li>file9.pdf</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
             </ul>
           </div>
         )}
