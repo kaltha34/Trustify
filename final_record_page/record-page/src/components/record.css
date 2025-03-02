@@ -65,3 +65,40 @@
     font-weight: bold;
     color: #333;
   }
+  
+  /* Hover effect for each file in the dropdown */
+  .approved-requests-dropdown li:hover, .pending-requests-dropdown li:hover, .revoked-access-dropdown li:hover, .audit-log-dropdown li:hover, .documents-dropdown li:hover, .download-dropdown li:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    color: #222;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  /* Responsive adjustments for record page */
+  @media (max-width: 1024px) {
+    .record-container {
+      margin-left: 0; /* Remove margin on smaller screens */
+      max-width: 100%; /* Ensure content width takes full available space */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .record-container {
+      margin-left: 0; /* Remove margin on smaller screens */
+      max-width: 100%;
+      margin-top: 80px;  /* Add top margin for better layout */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .record-container {
+      margin-left: 0;
+      max-width: 100%;
+      margin-top: 80px;
+    }
+  }
