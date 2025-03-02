@@ -20,6 +20,23 @@ const Record = () => {
         <h3 className="record-title">❌ Revoked Access</h3>
         <p>Identity data access revoked by you.</p>
       </div>
+       <div className="record-section">
+        <h3 className="record-title">📜 Audit Log</h3>
+        <p>Full history of when and where your identity was used.</p>
+      </div>
+      
+
+      <h2>Document Vault</h2>
+
+      <div className="record-section">
+        <h3 className="record-title">📂 Manage Uploaded Documents</h3>
+        <p>View and manage uploaded documents (NIC, Passport, Utility Bills).</p>
+      </div>
+
+      <div className="record-section">
+        <h3 className="record-title">⬇️ Download Verified Identity Records</h3>
+        <p>Download government-verified identity documents.</p>
+      </div>
     </div>
   );
 };
