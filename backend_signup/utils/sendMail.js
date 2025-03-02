@@ -8,21 +8,26 @@ const sendFraudAlert = async (email) => {
     from: process.env.SENDGRID_SENDER_EMAIL,
     subject: "⚠️ Security Alert: Suspicious Login Attempts",
     html: `
-      <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; border: 1px solid #ddd; border-radius: 10px; max-width: 500px;">
-        <h2 style="color: red; text-align: center;">⚠️ Security Alert</h2>
-        <p>Your account has experienced multiple failed login attempts.</p>
-        <p>If this wasn't you, <strong>please secure your account immediately.</strong></p>
+      <div style="font-family: 'Arial', sans-serif; background-color: #f4f4f4; padding: 20px; text-align: center;">
+        <div style="background: #ffffff; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+          <h2 style="color: red; margin-bottom: 10px;">⚠️ Security Alert</h2>
+          <p style="color: #555; font-size: 16px;">Your account has experienced multiple failed login attempts.</p>
+          <p style="color: #222; font-weight: bold; font-size: 16px;">If this wasn't you, <strong>please secure your account immediately.</strong></p>
 
-        <div style="text-align: center; margin: 20px 0; ">
-          <a href="https://your-app.com/reset-password?email=${email}"
-             style="background-color: #ff4d4d; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">
-            Reset Your Password
-          </a>
+          <div style="margin: 20px 0;">
+            <a href="https://your-app.com/reset-password?email=${email}"
+               style="background-color: #ff4d4d; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block; font-size: 16px;">
+              Reset Your Password
+            </a>
+          </div>
+
+          <p style="color: #777; font-size: 14px;">If you did not request this, you can ignore this email.</p>
+
+          <p style="margin-top: 20px; color: #888; font-size: 12px;">For security reasons, never share your login credentials.</p>
+          <p style="font-size: 14px; color: #444;">Stay safe, <br><strong>Trustify Security Team</strong></p>
         </div>
-
-        <p>If you did not request this, you can ignore this email.</p>
-        <p>Stay safe, <br><strong>Trustify Security Team</strong></p>
-      </div>`,
+      </div>
+    `,
   };
 
   try {
