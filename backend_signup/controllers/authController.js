@@ -6,31 +6,14 @@ const Admin = require('../models/adminModel');
 const sgMail = require('@sendgrid/mail');
 const sendFraudAlert = require("../utils/sendMail"); 
 const sendResetPasswordOTP = require("../utils/sendResetPasswordOTP");
+const sendOTP = require("../utils/sendLoginOTP");
 require('dotenv').config();
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
 
-const sendOTP = async (user, otp) => {
-  try {
-    if (!user || !user.email) {
-      throw new Error('User email not found');
-    }
 
-    const msg = {
-      to: user.email,
-      from: process.env.SENDGRID_SENDER_EMAIL,
-      subject: 'OTP for Login TRUSTIFY',
-      html: `<p>Your OTP for login is: <strong>${otp}</strong></p>`,
-    };
-
-    await sgMail.send(msg);
-    console.log('OTP sent successfully!');
-  } catch (error) {
-    console.error('Error sending OTP:', error.response ? error.response.body : error.message);
-  }
-};
 
 // Track failed login attempts
 const failedLoginAttempts = {};
