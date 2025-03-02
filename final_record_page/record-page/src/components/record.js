@@ -5,6 +5,9 @@ const Record = () => {
   const [isApprovedOpen, setIsApprovedOpen] = useState(false);
   const [isPendingOpen, setIsPendingOpen] = useState(false);
   const [isRevokedOpen, setIsRevokedOpen] = useState(false);
+  const [isAuditLogOpen, setIsAuditLogOpen] = useState(false);
+  const [isDocumentsOpen, setIsDocumentsOpen] = useState(false);
+  const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const handleFileClick = (fileName) => {
     // Logic to open a blank page (this could be a new window or route to a new page)
     window.open('', '_blank');  // Opens a blank page
