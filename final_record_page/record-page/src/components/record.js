@@ -2,23 +2,69 @@ import React from "react";
 import "./record.css"; // Import the Record CSS file
 
 const Record = () => {
+  const [isApprovedOpen, setIsApprovedOpen] = useState(false);
+  const [isPendingOpen, setIsPendingOpen] = useState(false);
+  const [isRevokedOpen, setIsRevokedOpen] = useState(false);
   return (
     <div className="record-container">
       <h2>Your Identity Verification History</h2>
 
-      <div className="record-section">
-        <h3 className="record-title">✅ Approved Requests</h3>
-        <p>Government or business approvals.</p>
+       {/* Approved Requests Section with Dropdown */}
+    <div className="record-section">
+      <h3 
+        className="record-title" 
+        onClick={() => setIsApprovedOpen(!isApprovedOpen)}
+      >
+        ✅ Approved Requests
+        <span className={`arrow-icon ${isApprovedOpen ? "open" : ""}`}>▼</span>
+       </h3>
+  
+      {isApprovedOpen && (
+        <div className="approved-requests-dropdown">
+          <p>Government or business approvals.</p>
+          <ul>
+            <li>file1.pdf</li>
+            <li>file2.pdf</li>
+            <li>file3.pdf</li>
+          </ul>
+        </div>
+      )}
+    </div>
+
+       {/* Pending Requests Section with Dropdown */}
+       <div className="record-section">
+        <h3 className="record-title" onClick={() => setIsPendingOpen(!isPendingOpen)}>
+          ⏳ Pending Requests
+          <span className={`arrow-icon ${isApprovedOpen ? "open" : ""}`}>▼</span>
+        </h3>
+        {isPendingOpen && (
+          <div className="pending-requests-dropdown">
+            <p>Requests awaiting verification.</p>
+            <ul>
+              <li>file4.pdf</li>
+              <li>file5.pdf</li>
+              <li>file6.pdf</li>
+            </ul>
+          </div>
+        )}
       </div>
 
+         {/* Revoked Access Section with Dropdown */}
       <div className="record-section">
-        <h3 className="record-title">⏳ Pending Requests</h3>
-        <p>Requests awaiting verification.</p>
-      </div>
-
-      <div className="record-section">
-        <h3 className="record-title">❌ Revoked Access</h3>
-        <p>Identity data access revoked by you.</p>
+        <h3 className="record-title" onClick={() => setIsRevokedOpen(!isRevokedOpen)}>
+          ❌ Revoked Access
+          <span className={`arrow-icon ${isApprovedOpen ? "open" : ""}`}>▼</span>
+        </h3>
+        {isRevokedOpen && (
+          <div className="revoked-access-dropdown">
+            <p>Identity data access revoked by you.</p>
+            <ul>
+              <li>file7.pdf</li>
+              <li>file8.pdf</li>
+              <li>file9.pdf</li>
+            </ul>
+          </div>
+        )}
       </div>
        <div className="record-section">
         <h3 className="record-title">📜 Audit Log</h3>
