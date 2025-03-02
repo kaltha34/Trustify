@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const Admin = require('../models/adminModel');
-const Insights = require('../models/Insights'); // Added import
+
 const sgMail = require('@sendgrid/mail');
 const sendFraudAlert = require("../utils/sendMail"); // Ensure correct path
 require('dotenv').config();
@@ -212,5 +212,94 @@ exports.AdminProfile = async (req, res) => {
     res.json(admin);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// **Forgot Password Request Function**
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const otp = generateOTP();
+    user.otp = otp;
+    user.otpTimestamp = Date.now();
+    await user.save();
+
+    // Send OTP to user via email
+    await sendOTP(user, otp);
+
+    res.status(200).json({ message: "OTP sent to email" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// **Verify OTP and allow password reset**
+exports.verifyOTPForPasswordReset = async (req, res) => {
+  const { otpInput, email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.otp) {
+      return res.status(400).json({ message: "No OTP found. Please request a new OTP." });
+    }
+
+    const otpExpirationTime = 5 * 60 * 1000; // 5 minutes expiration time
+    const otpAge = Date.now() - user.otpTimestamp;
+
+    if (otpAge > otpExpirationTime) {
+      return res.status(400).json({ message: "OTP has expired. Please request a new one." });
+    }
+
+    if (user.otp !== otpInput) {
+      return res.status(400).json({ message: "Incorrect OTP. Please try again." });
+    }
+
+    // OTP is valid, proceed to password reset
+    user.otp = null;
+    user.otpTimestamp = null;
+    await user.save();
+
+    res.status(200).json({ message: "OTP verified successfully. You can now reset your password." });
+  } catch (error) {
+    res.status(500).json({ message: "Error verifying OTP." });
+  }
+};
+
+// **Reset Password Function**
+exports.resetPassword = async (req, res) => {
+  const { email, newPassword, confirmPassword } = req.body;
+
+  try {
+    // Check if both passwords match
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match." });
+    }
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error resetting password." });
   }
 };
