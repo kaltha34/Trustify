@@ -102,3 +102,47 @@
       margin-top: 80px;
     }
   }
+  .dark-mode .download-dropdown a {
+    color: #1db954; /* Light green for visibility */
+  }
+  .dark-mode .approved-requests-dropdown li:hover,
+  .dark-mode .pending-requests-dropdown li:hover,
+  .dark-mode .revoked-access-dropdown li:hover,
+  .dark-mode .audit-log-dropdown li:hover,
+  .dark-mode .documents-dropdown li:hover,
+  .dark-mode .download-dropdown li:hover {
+    background-color: #444;
+  }
+  
+  /* Dropdown Visibility Fix */
+  .dark-mode .approved-requests-dropdown,
+  .dark-mode .pending-requests-dropdown,
+  .dark-mode .revoked-access-dropdown,
+  .dark-mode .audit-log-dropdown,
+  .dark-mode .documents-dropdown,
+  .dark-mode .download-dropdown {
+    background-color: #2b2b2b; /* Dark dropdown */
+    color: white;
+    border: 1px solid #555;
+  }
+  .dark-mode .record-section:nth-child(even) {
+    background-color: #292929;
+  }
+  .dark-mode .record-section:nth-child(odd) {
+    background-color: #333;
+  }
+  .dark-mode .record-title {
+    color: #f5f5f5;
+  }
+  
+  .dark-mode .record-section {
+    background: #2c2c2c; /* Darker background for sections */
+    border: 1px solid #444; /* Subtle border */
+  }
+  .dark-mode .record-container {
+    background-color: #1e1e1e; /* Dark background */
+    color: white;
+  }
+  .dark-mode h2 {
+    color: #ffffff; /* Ensures headings are visible in dark mode */
+  }
