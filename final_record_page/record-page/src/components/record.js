@@ -80,9 +80,9 @@ const Record = () => {
           <div className="audit-log-dropdown">
             <p>Full history of when and where your identity was used.</p>
             <ul>
-              <li>file7.pdf</li>
-              <li>file8.pdf</li>
-              <li>file9.pdf</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+              <li onClick={() => handleFileClick('file1.pdf')}>ffile📂</li>
             </ul>
           </div>
         )}
@@ -104,9 +104,9 @@ const Record = () => {
       {isDocumentsOpen && (
         <div className="documents-dropdown">
           <ul>
-            <li>file1.pdf   📂</li>
-            <li>file2.pdf   📂</li>
-            <li>file3.pdf   📂</li>
+            <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+            <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
+            <li onClick={() => handleFileClick('file1.pdf')}>file📂</li>
           </ul>
         </div>
       )}
@@ -125,9 +125,9 @@ const Record = () => {
         {isDownloadOpen && (
           <div className="download-dropdown">
             <ul>
-              <li><a href="/path/to/file2.pdf" download>file2.pdf   📂</a></li>
-              <li><a href="/path/to/file3.pdf" download>file3.pdf   📂</a></li>
-              <li><a href="/path/to/file4.pdf" download>file4.pdf   📂</a></li>
+              <li><a href="/path/to/file2.pdf" download>file   📂</a></li>
+              <li><a href="/path/to/file3.pdf" download>file   📂</a></li>
+              <li><a href="/path/to/file4.pdf" download>file   📂</a></li>
             </ul>
           </div>
         )}
