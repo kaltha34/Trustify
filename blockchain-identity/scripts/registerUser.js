@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 require("dotenv").config();
 
 async function main() {
-    const contractAddress = "0xDfF94A7b021caE6cD52fb92A827267754Eedb483"; // Your deployed contract address
+    const contractAddress = "0xfddCA012444F0A0F25E83fe5Dc33f5Dc58a26f6a"; 
     const contractABI = require("../artifacts/contracts/IdentityVerification.sol/IdentityVerification.json").abi;
 
     const provider = new ethers.JsonRpcProvider("https://testnet.skalenodes.com/v1/giant-half-dual-testnet");
