@@ -2,7 +2,7 @@ const { ethers } = require("hardhat");
 require("dotenv").config();
 
 async function main(documentCID) {
-  const contractAddress = "0xb9528Ba389CD58762E01B8e3feA73a2d1d3a0a9C"; // Replace with actual contract address
+  const contractAddress = "0x21CE0dE1A8906D7Ae539055F23D314a133Dd66e0"; // Replace with actual contract address
   const contractABI = require("../artifacts/contracts/IdentityVerification.sol/IdentityVerification.json").abi;
 
   const provider = new ethers.JsonRpcProvider(process.env.SKALE_RPC_URL);
