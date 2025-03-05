@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 require("dotenv").config();
 
 async function main() {
-    const contractAddress = "0xDfF94A7b021caE6cD52fb92A827267754Eedb483"; 
+    const contractAddress = "0xb9528Ba389CD58762E01B8e3feA73a2d1d3a0a9C"; 
     const contractABI = require("../artifacts/contracts/IdentityVerification.sol/IdentityVerification.json").abi;
 
     // 🚀 Connect to the SKALE testnet
@@ -15,7 +15,7 @@ async function main() {
     const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
     // 🔹 Define a document hash
-    const documentHash = "abcs456"; 
+    const documentHash = "kalari"; 
 
     console.log("🔹 Adding record...");
 
