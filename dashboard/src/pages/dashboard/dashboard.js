@@ -7,10 +7,12 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import io from "socket.io-client";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
+  const [greeting, setGreeting] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [counts, setCounts] = useState({
     active: 0,
@@ -30,6 +32,15 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      setGreeting("Good Morning! ☀️");
+    } else if (hour < 18) {
+      setGreeting("Good Afternoon! 🌤️");
+    } else {
+      setGreeting("Good Evening! 🌙");
+    }
+
     const timeout = setTimeout(() => {
       setCounts({ active, inactive, inprogress });
     }, 500);
@@ -80,6 +91,31 @@ const Dashboard = () => {
     <div className="Dashboard-container">
       <div className="dashboard-header">
         <h1>Dashboard</h1>
+
+        {/* Greeting with Fade Animation */}
+        <motion.div className="greeting-message">
+          {greeting.split(" ").map((word, wordIndex) => (
+            <span key={wordIndex}>
+              {word.split("").map((letter, letterIndex) => (
+                <motion.span
+                  key={letterIndex}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{
+                    delay: wordIndex * 0.5 + letterIndex * 0.1,
+                    duration: 0.3,
+                    ease: "easeIn",
+                  }}
+                >
+                  {letter}
+                </motion.span>
+              ))}
+              &nbsp;
+            </span>
+          ))}
+        </motion.div>
+
         <button className="logout-button" onClick={handleLogout}>
           <LogOut size={20} />
           Logout
