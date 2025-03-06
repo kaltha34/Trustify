@@ -245,3 +245,24 @@
     padding: 0.8rem 1rem 0.8rem 2.8rem;
   }
 }
+
+/*Improve service card responsiveness*/
+@media (max-width: 768px) {
+  .service-card {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .service-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .service-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .service-card p {
+    font-size: 1rem;
+  }
+}
