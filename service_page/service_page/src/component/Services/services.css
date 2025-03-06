@@ -266,3 +266,19 @@
     font-size: 1rem;
   }
 }
+
+/*Responsive stats section*/
+@media (max-width: 768px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stat-item h4 {
+    font-size: 1.8rem;
+  }
+
+  .stat-item p {
+    font-size: 1rem;
+  }
+}
