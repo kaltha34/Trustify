@@ -210,3 +210,17 @@
 .dark-mode .card-decoration {
   background: radial-gradient(circle, rgba(15, 77, 92, 0.1) 0%, rgba(15, 77, 92, 0) 70%);
 }
+
+/* Responsive Services Grid */
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
