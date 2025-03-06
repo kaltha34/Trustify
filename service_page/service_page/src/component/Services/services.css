@@ -224,3 +224,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+/*Responsive header and search bar*/
+@media (max-width: 768px) {
+  .services-header {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .search-bar input {
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
+  }
+}
