@@ -8,6 +8,7 @@ function App() {
     <Router>
       <SideBar />
       <Routes>
+        console.log("App is rendering");
         <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/upload" element={<UploadDoc />} />

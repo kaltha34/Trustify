@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
-import { Facebook, Linkedin, Instagram, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { Facebook, Linkedin, Instagram, Mail, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserShield, FaExclamationTriangle } from "react-icons/fa";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -22,6 +21,13 @@ const Dashboard = () => {
   const [active] = useState("12");
   const [inactive] = useState("17");
   const [inprogress] = useState("24");
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("IsuserToken");
+    navigate("/login");
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -72,7 +78,13 @@ const Dashboard = () => {
 
   return (
     <div className="Dashboard-container">
-      <h1>Dashboard</h1>
+      <div className="dashboard-header">
+        <h1>Dashboard</h1>
+        <button className="logout-button" onClick={handleLogout}>
+          <LogOut size={20} />
+          Logout
+        </button>
+      </div>
       <div className="Dashboard-body">
         {/* Identity Verification Section */}
         <div className="Verifications">

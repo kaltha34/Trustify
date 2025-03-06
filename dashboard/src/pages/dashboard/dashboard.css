@@ -5,7 +5,34 @@
   padding-right: 1rem;
   min-height: 100vh;
   flex-direction: column;
+  display: flex;
+  justify-content: space-between;
 }
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: rgb(46, 28, 184);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  letter-spacing: 1px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #007bff;
+}
+
 .Dashboard-container h1 {
   font-size: 35px;
   letter-spacing: 1px;
