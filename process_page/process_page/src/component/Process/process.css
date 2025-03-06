@@ -3,6 +3,7 @@
   padding: 2rem;
   min-height: 100vh;
   background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+  
 }
 
 /* Header Styles */
@@ -336,6 +337,13 @@
     padding: 1rem;
   }
 }
+@media (max-width: 1024px) {
+  .process-container {
+    margin-left: 220px; /* Adjust for medium-sized screens */
+    width: calc(100% - 220px);
+  }
+}
+
 /*Responsive header section*/
 @media (max-width: 768px) {
   .process-header {
