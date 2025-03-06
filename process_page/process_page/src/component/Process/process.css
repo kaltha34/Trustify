@@ -358,3 +358,29 @@
     height: 150px;
   }
 }
+
+/*Improve timeline*/
+@media (max-width: 768px) {
+  .timeline-container {
+    padding: 1rem;
+  }
+
+  .timeline-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .timeline-number {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  .timeline-card {
+    padding: 1rem;
+  }
+
+  .timeline-connector {
+    left: 15px;
+  }
+}
