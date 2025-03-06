@@ -412,3 +412,15 @@
     height: 130px;
   }
 }
+
+/*Responsive Info section*/
+@media (max-width: 768px) {
+  .info-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .info-card {
+    padding: 1.5rem;
+  }
+}
