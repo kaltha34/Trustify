@@ -13,41 +13,52 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+// ✅ Ensure only one super-admin exists
 userSchema.pre("save", async function (next) {
-  if (this.role === "super-admin") {
+  if (this.role === "super-admin" && this.isNew) {
     const existingSuperAdmin = await mongoose
       .model("User")
       .findOne({ role: "super-admin" });
-    if (
-      existingSuperAdmin &&
-      existingSuperAdmin._id.toString() !== this._id.toString()
-    ) {
+    if (existingSuperAdmin) {
       return next(new Error("Super Admin already exists!"));
     }
   }
 
-  if (this.isModified("password") || this.isNew) {
+  // ✅ Prevent double hashing
+  if (this.isModified("password") && !this.password.startsWith("$2b$")) {
+    console.log("Hashing password before saving...");
     this.password = await bcrypt.hash(this.password, 10);
+  } else {
+    console.log("Password is already hashed, skipping...");
   }
 
   next();
 });
 
+// ✅ Prevent changing a super-admin's role
 userSchema.pre("findOneAndUpdate", async function (next) {
   const update = this.getUpdate();
-  const existingSuperAdmin = await mongoose
-    .model("User")
-    .findOne({ role: "super-admin" });
+  if (update.role && update.role !== "super-admin") {
+    const existingSuperAdmin = await mongoose
+      .model("User")
+      .findOne({ role: "super-admin" });
+    if (existingSuperAdmin) {
+      return next(new Error("Super Admin role cannot be changed!"));
+    }
+  }
 
-  if (update.role && update.role !== "super-admin" && existingSuperAdmin) {
-    return next(new Error("Super Admin role cannot be changed!"));
+  // Hash new password if being updated
+  if (update.password && !update.password.startsWith("$2b$")) {
+    console.log("Hashing password before update...");
+    update.password = await bcrypt.hash(update.password, 10);
   }
 
   next();
 });
 
-userSchema.methods.comparePassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+// ✅ Method to compare passwords correctly
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 const User = mongoose.model("User", userSchema);
