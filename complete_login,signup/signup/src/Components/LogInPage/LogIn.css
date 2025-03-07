@@ -72,61 +72,6 @@ body {
   border-radius: 50px;
   width: 400px;
 }
-.LogIn-Form select {
-  border-radius: 50px;
-  width: 425px;
-  padding: 0.8rem;
-  margin-bottom: 15px;
-  padding-left: 30px;
-  padding-right: 35px;
-}
-
-select {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding-left: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.select-container {
-  position: relative;
-  padding-right: 35px;
-  width: 425px;
-}
-
-.select-container::after {
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  font-size: 14px;
-  color: #333;
-}
-
-/* Make placeholder text gray */
-select option:disabled {
-  color: rgb(0, 0, 0);
-  font-style: italic;
-}
-
-select:hover {
-  border: 5px solid #85ad27;
-  cursor: pointer;
-}
-input:hover {
-  border: 5px solid #85ad27;
-}
-input::placeholder {
-  font-size: 16px;
-  color: black;
-  padding-left: 20px;
-}
-input:focus::placeholder {
-  color: transparent;
-  border-width: 3px;
-}
 
 .SignUp-Button {
   background-color: black;
@@ -141,37 +86,6 @@ input:focus::placeholder {
 }
 .SignUp-Button:hover {
   transform: scale(1.05);
-}
-
-.Options {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  margin-top: 390px;
-  margin-left: 100px;
-}
-
-.button {
-  width: 300px;
-}
-
-.login-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  padding: 10px 20px;
-  font-size: 16px;
-  width: 100%;
-  cursor: pointer;
-  background-color: #000000;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  border: 3px solid white;
-}
-.button button:hover {
-  transform: scale(1.1);
 }
 
 /* Modal Overlay */
@@ -199,24 +113,6 @@ input:focus::placeholder {
   text-align: center;
 }
 
-/* Modal Heading */
-.modal-content h2 {
-  margin-top: 10px;
-  text-align: center;
-  color: white;
-  font-size: 35px;
-  margin-bottom: 15px;
-}
-
-.otp-verified {
-  color: green;
-  font-weight: bold;
-}
-.otp-error {
-  color: red;
-  font-weight: bold;
-}
-
 /* OTP Input */
 .otp-input {
   width: 200px;
@@ -230,18 +126,10 @@ input:focus::placeholder {
   letter-spacing: 5px;
 }
 
-.otp-input::placeholder {
-  margin-left: 20px;
+.otp-error {
+  color: red;
+  font-weight: bold;
 }
-
-/* Modal Buttons */
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-
-/* Button Styles */
 
 .verify-button {
   background-color: #007bff;
@@ -255,24 +143,25 @@ input:focus::placeholder {
   transition: background-color 0.3s;
 }
 
-.continue-button:hover,
 .verify-button:hover {
   background-color: #0056b3;
 }
 
-.modal-buttons button + button {
-  margin-left: 10px;
-}
-
-.LogIn-Form p {
-  color: green;
-  margin-top: 10px;
-  margin-left: 140px;
-  font-size: 16px;
-}
-
-.LogIn-Form span {
-  color: blue;
+/* Logout Button Styles */
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  text-decoration: underline;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #e60000;
 }
