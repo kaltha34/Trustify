@@ -2,9 +2,17 @@ import "./LogIn.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 
 const AdminLogIn = () => {
   const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    localStorage.removeItem("IsuserToken");
+    navigate("/login");
+  };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -88,6 +96,11 @@ const AdminLogIn = () => {
           </div>
         </div>
       )}
+
+      <button className="logout-button" onClick={handleLogout}>
+        <LogOut size={20} />
+        Logout
+      </button>
 
       <div className="Already-Acc">
         <p>Not an admin? <span onClick={() => navigate("/")}>Go back</span></p>
