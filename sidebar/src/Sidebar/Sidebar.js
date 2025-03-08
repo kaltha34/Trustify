@@ -12,15 +12,34 @@ import {
   Sun,
   Moon,
   Menu,
-  X,
 } from "lucide-react";
 import "./Sidebar.css";
 
 const Sidebar = () => {
-  const [name, setName] = useState("Kalhara Thabrew");
-  const [email, setEmail] = useState("kalhara.s.thabrew@gmail.com");
+  const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
   const [isOpen, setIsOpen] = useState(window.innerWidth > 1024);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const storedData = JSON.parse(localStorage.getItem("IsUserLogging"));
+      if (!storedData || !storedData.token) return;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/user", {
+          method: "GET",
+          headers: { Authorization: storedData.token },
+        });
+
+        const data = await res.json();
+        if (res.ok) setUser(data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", darkMode);
@@ -29,25 +48,11 @@ const Sidebar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 1024) {
-        setIsOpen(true);
-      }
+      setIsOpen(window.innerWidth > 1024);
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const menuItems = [
-    { name: "Dashboard", icon: <Home />, path: "/dashboard" },
-    { name: "Insight", icon: <BarChart />, path: "/insight" },
-    { name: "People & Teams", icon: <Users />, path: "/teams" },
-    { name: "Services", icon: <Package />, path: "/services" },
-    { name: "Inbox", icon: <MessageSquare />, path: "/inbox" },
-    { name: "Process", icon: <Settings />, path: "/process" },
-    { name: "Records", icon: <FileText />, path: "/records" },
-    { name: "Help Center", icon: <HelpCircle />, path: "/helpcenter" },
-  ];
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -64,23 +69,40 @@ const Sidebar = () => {
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [isOpen]);
 
+  const menuItems = [
+    { name: "Dashboard", icon: <Home />, path: "/dashboard" },
+    { name: "Insight", icon: <BarChart />, path: "/insight" },
+    { name: "People & Teams", icon: <Users />, path: "/teams" },
+    { name: "Services", icon: <Package />, path: "/services" },
+    { name: "Inbox", icon: <MessageSquare />, path: "/inbox" },
+    { name: "Process", icon: <Settings />, path: "/process" },
+    { name: "Records", icon: <FileText />, path: "/records" },
+    { name: "Help Center", icon: <HelpCircle />, path: "/helpcenter" },
+  ];
+
   return (
     <div className="content">
-      <button
-        className="menu-btn"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle Sidebar"
-      >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+      {!isOpen && (
+        <button
+          className="menu-btn"
+          onClick={() => setIsOpen(true)}
+          aria-label="Toggle Sidebar"
+        >
+          <Menu size={24} />
+        </button>
+      )}
 
-      {/* Sidebar */}
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="profile">
-          <img src="/image.jpe" alt="Profile" className="profile-image" />
           <div className="profile-info">
-            <h3>{name}</h3>
-            <p>{email}</p>
+            {user ? (
+              <>
+                <p>{user.name}</p>
+                <p>{user.email}</p>
+              </>
+            ) : (
+              <p>Login here</p>
+            )}
           </div>
         </div>
 
