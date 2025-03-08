@@ -77,7 +77,11 @@ exports.userLogin = async (req, res) => {
 
       if (failedLoginAttempts[email] >= 5) {
         await sendFraudAlert(email);
-        await Insights.findOneAndUpdate({}, { $inc: { fraudAlerts: 1 } }, { upsert: true });
+        await Insights.findOneAndUpdate(
+          {},
+          { $inc: { fraudAlerts: 1 } },
+          { upsert: true }
+        );
         failedLoginAttempts[email] = 0;
       }
 
@@ -93,11 +97,21 @@ exports.userLogin = async (req, res) => {
 
     await sendOTP(user, otp);
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    res.status(200).json({ message: "OTP sent to email", token });
+    //Ensure only one response is sent
+    return res.status(200).json({
+      message: "OTP sent to email",
+      token,
+      user: { name: user.name, email: user.email },
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (!res.headersSent) {
+      return res.status(500).json({ error: error.message });
+    }
+    console.error("Error in userLogin:", error);
   }
 };
 
