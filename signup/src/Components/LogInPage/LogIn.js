@@ -79,12 +79,23 @@ const LogIn = ({ onLogin }) => {
   };
 
   return (
-    <div className="SignUp-Container">
-      <p>Welcome to</p>
-      <h1>TRUSTIFY</h1>
+    <div className="LogIn-Container">
+      <div className="header">
+        <p>Welcome to</p>
+        <h1>
+          <span>T</span>
+          <span>R</span>
+          <span>U</span>
+          <span>S</span>
+          <span>T</span>
+          <span>I</span>
+          <span>F</span>
+          <span>Y</span>
+        </h1>
+      </div>
 
       <div className="LogIn-Form">
-        <h2>Log In to your account</h2>
+        <h2>Log In Account</h2>
         <form onSubmit={handleLogin}>
           <input
             type="email"
@@ -112,27 +123,11 @@ const LogIn = ({ onLogin }) => {
             Log In
           </button>
         </form>
-        <div className="Already-Acc">
+        <div className="newAcc">
           <p>
             Do you have an Account?{" "}
             <span onClick={() => navigate("/signup")}>SignUp</span>
           </p>
-        </div>
-      </div>
-
-      <div className="Option">
-        <div className="button">
-          <button className="login-button">
-            <span className="button-text">Continue with Google</span>
-            <FaGoogle size={20} />
-          </button>
-        </div>
-
-        <div className="button">
-          <button className="login-button">
-            <span className="button-text">Continue with Email</span>
-            <FaEnvelope size={20} />
-          </button>
         </div>
       </div>
 
