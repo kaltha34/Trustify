@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FaGoogle, FaEnvelope } from "react-icons/fa";
 import "./LogIn.css";
 
 const LogIn = ({ onLogin }) => {
@@ -14,7 +13,7 @@ const LogIn = ({ onLogin }) => {
   const [otp, setOtp] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [otpError, setOtpError] = useState("");
-  const [authToken, setAuthToken] = useState(""); // Store JWT token
+  const [authToken, setAuthToken] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();

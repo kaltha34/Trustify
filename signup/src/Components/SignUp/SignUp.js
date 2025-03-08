@@ -42,8 +42,19 @@ const SignUp = () => {
 
   return (
     <div className="SignUp-Container">
-      <p>Welcome to</p>
-      <h1>TRUSTIFY</h1>
+      <div className="header-signup">
+        <p>Welcome to</p>
+        <h1>
+          <span>T</span>
+          <span>R</span>
+          <span>U</span>
+          <span>S</span>
+          <span>T</span>
+          <span>I</span>
+          <span>F</span>
+          <span>Y</span>
+        </h1>
+      </div>
 
       <div className="SignUp-Form">
         <h2>Create an Account</h2>
@@ -83,27 +94,6 @@ const SignUp = () => {
             Already You have Account?{" "}
             <span onClick={() => navigate("/login")}>Login</span>
           </p>
-        </div>
-      </div>
-
-      <div className="Options">
-        <div className="button">
-          <button className="login-button">
-            <span className="button-text">Continue with Google</span>
-            <FaGoogle size={20} />
-          </button>
-        </div>
-        <div className="button">
-          <button className="login-button">
-            <span className="button-text">Continue with Apple</span>
-            <FaApple size={20} />
-          </button>
-        </div>
-        <div className="button">
-          <button className="login-button">
-            <span className="button-text">Continue with Email</span>
-            <FaEnvelope size={20} />
-          </button>
         </div>
       </div>
     </div>
