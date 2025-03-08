@@ -9,41 +9,34 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [error, setErrorMessage] = useState("");
 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
     // Validate input fields
-    if (!(name && email && password && role)) {
+    if (!(name && email && password)) {
       alert("Please fill in all fields.");
       return;
     }
 
     try {
-      // Send API request to backend
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/signup",
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/user/signup",
         {
           name,
           email,
           password,
-          role,
         }
       );
 
-      // On success
-      setSuccessMessage("Signup successfully.");
-      setTimeout(() => {
-        navigate("/login"); // Redirect to login page after 2 seconds
-      }, 2000);
+      console.log("Response:", data);
+
+      setSuccessMessage("Sign Up Successfully.");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
-      // On error
-      setErrorMessage(
-        error.response ? error.response.data.message : "An error occurred"
-      );
+      console.error("Signup Error:", error.response?.data || error);
+      alert(error.response?.data?.message || "Something went wrong.");
     }
   };
 
@@ -79,18 +72,7 @@ const SignUp = () => {
             placeholder="Password"
             required
           />
-          <select
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            required
-          >
-            <option value="" disabled>
-              Select Role
-            </option>
-            <option value="User">User</option>
-            <option value="Admin">Admin</option>
-          </select>
+
           <button type="submit" className="SignUp-Button">
             Sign Up
           </button>

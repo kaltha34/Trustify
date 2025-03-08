@@ -1,28 +1,74 @@
-import "./LogIn.css";
-import { FaGoogle, FaApple, FaEnvelope } from "react-icons/fa";
+// export default LogIn;
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaGoogle, FaEnvelope } from "react-icons/fa";
+import "./LogIn.css";
 
-const LogIn = () => {
+const LogIn = ({ onLogin }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [otpError, setOtpError] = useState("");
-  const correctOtp = "123456";
+  const [authToken, setAuthToken] = useState(""); // Store JWT token
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email && password && role) {
-      setShowOtpModal(true);
-      setOtp("");
-      setIsOtpVerified(false);
-      setOtpError("");
+    if (email && password) {
+      try {
+        // Send login request to backend
+        const response = await axios.post(
+          "http://localhost:5000/api/auth/user/login",
+          { email, password }
+        );
+
+        if (response.status === 200) {
+          // On successful login, store token and show OTP modal
+          const token = response.data.token;
+
+          localStorage.setItem("authToken", token);
+          setAuthToken(token);
+          setShowOtpModal(true);
+          setOtp("");
+          setIsOtpVerified(false);
+          setOtpError("");
+        }
+      } catch (error) {
+        alert("Error: " + error.response.data.message);
+      }
     } else {
       alert("Please fill in all fields.");
+    }
+  };
+
+  const handleOtpSubmit = async () => {
+    try {
+      const storedToken = localStorage.getItem("authToken"); // Get token from localStorage
+
+      if (!storedToken) {
+        setOtpError("Authentication failed. Please log in again.");
+        return;
+      }
+
+      // Send OTP verification request to backend
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/verify-otp",
+        { otpInput: otp, token: authToken }
+      );
+
+      if (response.status === 200) {
+        localStorage.setItem("isUserLoggedIn", "true"); // Store admin login state
+
+        setIsOtpVerified(true);
+        navigate("/user-dashboard");
+      }
+    } catch (error) {
+      setOtpError(error.response.data.message);
+      setIsOtpVerified(false);
     }
   };
 
@@ -32,22 +78,13 @@ const LogIn = () => {
     setIsOtpVerified(false);
   };
 
-  const handleOtpSubmit = () => {
-    if (otp === correctOtp) {
-      setIsOtpVerified(true);
-    } else {
-      setIsOtpVerified(false);
-      setOtpError("OTP Incorrect");
-    }
-  };
-
   return (
     <div className="SignUp-Container">
       <p>Welcome to</p>
       <h1>TRUSTIFY</h1>
 
       <div className="LogIn-Form">
-        <h2>Log In account</h2>
+        <h2>Log In to your account</h2>
         <form onSubmit={handleLogin}>
           <input
             type="email"
@@ -65,42 +102,32 @@ const LogIn = () => {
             placeholder="Password"
             required
           />
-          <select
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            required
+          <span
+            className="forgot-password"
+            onClick={() => navigate("/forgot-password")}
           >
-            <option value="" disabled>
-              Select Role
-            </option>
-            <option value="User">User</option>
-            <option value="Admin">Admin</option>
-          </select>
+            Forgot Password?
+          </span>
           <button type="submit" className="SignUp-Button">
             Log In
           </button>
         </form>
         <div className="Already-Acc">
           <p>
-            Do you have An Account?{" "}
+            Do you have an Account?{" "}
             <span onClick={() => navigate("/signup")}>SignUp</span>
           </p>
         </div>
       </div>
-      <div className="Options">
+
+      <div className="Option">
         <div className="button">
           <button className="login-button">
             <span className="button-text">Continue with Google</span>
             <FaGoogle size={20} />
           </button>
         </div>
-        <div className="button">
-          <button className="login-button">
-            <span className="button-text">Continue with Apple</span>
-            <FaApple size={20} />
-          </button>
-        </div>
+
         <div className="button">
           <button className="login-button">
             <span className="button-text">Continue with Email</span>
@@ -109,15 +136,30 @@ const LogIn = () => {
         </div>
       </div>
 
+      <div className="admin-login-container">
+        <button
+          className="admin-login-button"
+          onClick={() => navigate("/admin-login")}
+        >
+          Admin Login
+        </button>
+      </div>
+
       {showOtpModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Enter OTP</h2>
+            <h2
+              style={{ fontSize: "38px", color: "blue", fontWeight: "bolder" }}
+            >
+              TRUSTIFY
+            </h2>
+            <h2 style={{ fontSize: "18px" }}>We sent OTP to {email}</h2>
             <input
               type="text"
-              placeholder="-"
+              placeholder="Enter OTP Here"
               className="otp-input"
               value={otp}
+              maxLength={6}
               onChange={handleOtpChange}
             />
 
@@ -141,15 +183,6 @@ const LogIn = () => {
                 onClick={handleOtpSubmit}
               >
                 Verify
-              </button>
-              <button
-                className={`continue-button ${
-                  isOtpVerified ? "enabled" : "disabled"
-                }`}
-                disabled={!isOtpVerified}
-                onClick={() => setShowOtpModal(false)}
-              >
-                Continue
               </button>
             </div>
           </div>

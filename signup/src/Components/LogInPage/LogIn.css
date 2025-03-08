@@ -1,5 +1,4 @@
 body {
-  background-image: url(../../../assets//SignUpBackground.jpg);
   height: 100vh;
   background-size: cover;
   background-position: center;
@@ -50,7 +49,7 @@ body {
   width: 40%;
   padding-left: 12rem;
   border-radius: 10px;
-  margin-top: 290px;
+  margin-top: 240px;
   margin-left: -600px;
 }
 .LogIn-Form h2 {
@@ -59,6 +58,9 @@ body {
   font-size: 30px;
   font-weight: bolder;
   color: white;
+}
+.LogIn-Form p {
+  font-size: 10px;
 }
 
 .LogIn-Form form {
@@ -71,23 +73,6 @@ body {
   border: 1px solid #ccc;
   border-radius: 50px;
   width: 400px;
-}
-.LogIn-Form select {
-  border-radius: 50px;
-  width: 425px;
-  padding: 0.8rem;
-  margin-bottom: 15px;
-  padding-left: 30px;
-  padding-right: 35px;
-}
-
-select {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding-left: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  width: 100%;
 }
 
 .select-container {
@@ -105,25 +90,15 @@ select {
   color: #333;
 }
 
-/* Make placeholder text gray */
-select option:disabled {
-  color: rgb(0, 0, 0);
-  font-style: italic;
+.LogIn-Form input:hover {
+  /* border: 5px solid #85ad27; */
 }
-
-select:hover {
-  border: 5px solid #85ad27;
-  cursor: pointer;
-}
-input:hover {
-  border: 5px solid #85ad27;
-}
-input::placeholder {
+.LogIn-Form input::placeholder {
   font-size: 16px;
   color: black;
   padding-left: 20px;
 }
-input:focus::placeholder {
+.LogIn-Form input:focus::placeholder {
   color: transparent;
   border-width: 3px;
 }
@@ -143,16 +118,35 @@ input:focus::placeholder {
   transform: scale(1.05);
 }
 
-.Options {
+.Option {
   display: flex;
   flex-direction: column;
+  margin-top: 320px;
   gap: 25px;
-  margin-top: 390px;
   margin-left: 100px;
 }
 
 .button {
   width: 300px;
+}
+
+.admin-login-button {
+  background-color: #000000;
+  color: white;
+  width: 140px;
+  height: 50px;
+  letter-spacing: 1px;
+  border-radius: 40px;
+  margin-top: 30px;
+  cursor: pointer;
+  border: 2px solid white;
+  font-weight: bold;
+}
+
+.admin-login-button:hover {
+  background-color: white;
+  color: black;
+  transform: scale(1.1);
 }
 
 .login-button {
@@ -174,111 +168,104 @@ input:focus::placeholder {
   transform: scale(1.1);
 }
 
-/* Modal Overlay */
+/* Modal Overlay (Blur Background) */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  backdrop-filter: blur(5px);
+  z-index: 9999;
 }
 
-/* Modal Content */
 .modal-content {
-  background-color: rgb(0, 0, 0);
-  padding: 30px;
-  border-radius: 50px;
-  border: 2px solid white;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   text-align: center;
+  width: 350px;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Modal Heading */
 .modal-content h2 {
-  margin-top: 10px;
-  text-align: center;
-  color: white;
-  font-size: 35px;
+  font-weight: bold;
+  color: #222;
   margin-bottom: 15px;
+}
+
+.otp-input {
+  width: 80%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  letter-spacing: 10px;
+  text-align: center;
+  font-weight: bold;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.otp-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Error & Success Messages */
+.otp-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 8px;
 }
 
 .otp-verified {
   color: green;
-  font-weight: bold;
-}
-.otp-error {
-  color: red;
-  font-weight: bold;
+  font-size: 14px;
+  margin-top: 8px;
 }
 
-/* OTP Input */
-.otp-input {
-  width: 200px;
-  height: 50px;
-  margin-left: 5px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  font-size: 16px;
-  text-align: center;
-  letter-spacing: 5px;
-}
-
-.otp-input::placeholder {
-  margin-left: 20px;
-}
-
-/* Modal Buttons */
 .modal-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.continue-button {
   margin-top: 15px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 16px;
 }
-.continue-button.enabled {
-  margin-top: 15px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  color: white;
-  font-size: 16px;
-  background-color: #007bff;
-}
-/* Button Styles */
 
 .verify-button {
-  background-color: #007bff;
+  background: #007bff;
   color: white;
-  margin-top: 15px;
-  padding: 10px 20px;
   border: none;
-  border-radius: 50px;
-  cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
   font-size: 16px;
-  transition: background-color 0.3s;
+  font-weight: bold;
+  cursor: pointer;
+  width: 90%;
+  transition: all 0.3s;
 }
 
-.continue-button:hover,
 .verify-button:hover {
-  background-color: #0056b3;
+  background: #0056b3;
+  transform: scale(1.05);
 }
 
-.modal-buttons button + button {
-  margin-left: 10px;
+.verify-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .LogIn-Form p {
@@ -287,9 +274,46 @@ input:focus::placeholder {
   margin-left: 140px;
   font-size: 16px;
 }
+.forgot-password {
+  display: block;
 
+  margin-top: 3px;
+  margin-left: 150px;
+  margin-bottom: 20px;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 14px;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
 .LogIn-Form span {
   color: blue;
   cursor: pointer;
   text-decoration: underline;
+}
+
+.otp-input.shake {
+  animation: shake 0.5s ease-out;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
