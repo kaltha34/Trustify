@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Users, Sun, Moon, File, User } from "lucide-react";
+import { Users, Sun, Moon, File, User, FileQuestion } from "lucide-react";
 import "./Sidebar.css";
 
 const Sidebar = ({ setSelectedMenu }) => {
@@ -19,6 +19,7 @@ const Sidebar = ({ setSelectedMenu }) => {
     { name: "Profile", icon: <User /> },
     { name: "Admin Panel", icon: <Users /> },
     { name: "Documents", icon: <File /> },
+    { name: "FAQ", icon:<FileQuestion /> },
   ];
 
   return (
