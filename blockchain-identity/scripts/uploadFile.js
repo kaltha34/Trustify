@@ -1,61 +1,89 @@
-import { create } from '@web3-storage/w3up-client';
-import * as fs from 'fs';
-import path from 'path';
+import { DocumentManager } from '../utils/DocumentManager.js';
+import dotenv from 'dotenv';
 
-async function uploadFile(filePath) {
+// Load environment variables
+dotenv.config();
+
+// Document types supported by the system
+const DOCUMENT_TYPES = {
+    NIC: 'NIC',
+    BIRTH_CERT: 'BIRTH_CERTIFICATE',
+    PASSPORT: 'PASSPORT'
+};
+
+async function uploadIdentityDocument(docType, filePath, walletAddress) {
     try {
-        // Check if file exists
-        if (!fs.existsSync(filePath)) {
-            console.error('❌ File not found:', filePath);
-            process.exit(1);
+        // Check required environment variables
+        if (!process.env.DOCUMENTS_CONTRACT) {
+            throw new Error('DOCUMENTS_CONTRACT address not found in .env file');
+        }
+        if (!process.env.RPC_URL) {
+            throw new Error('RPC_URL not found in .env file');
         }
 
-        console.log('🔹 Creating Web3.Storage client...');
-        const client = await create();
+        // Initialize document manager
+        console.log('🔹 Initializing document manager...');
+        const documentManager = new DocumentManager(
+            process.env.DOCUMENTS_CONTRACT,
+            process.env.RPC_URL
+        );
+        await documentManager.initialize();
 
-        // Get the space DID
-        const spaceDid = 'did:key:z6Mkhi9HRVD3LGqEG2KuNFgZzC8BVyvcejP4XyHac29dzhA9';
+        // Upload document
+        console.log(`🔹 Processing ${docType} document for ${walletAddress}...`);
+        const result = await documentManager.uploadDocument(docType, filePath, walletAddress);
+
+        // Verify upload
+        console.log('🔹 Verifying document upload...');
+        const isValid = await documentManager.verifyDocument(walletAddress, docType);
         
-        try {
-            // Read file and prepare for upload
-            const fileContent = await fs.promises.readFile(filePath);
-            const fileName = path.basename(filePath);
-            const file = new File([fileContent], fileName);
-
-            console.log(`🔹 Uploading ${fileName} to Web3.Storage...`);
+        if (isValid) {
+            console.log('\n✅ Document verified successfully!');
+            console.log('\n📝 Document details:');
+            console.log(JSON.stringify(result, null, 2));
             
-            // Set current space and upload
-            await client.setCurrentSpace(spaceDid);
-            const cid = await client.uploadFile(file);
-
-            console.log('✅ Upload complete!');
-            console.log(`📝 Content ID: ${cid}`);
-            console.log(`🔗 View at: https://w3s.link/ipfs/${cid}`);
-            console.log(`🔗 IPFS Gateway: https://ipfs.io/ipfs/${cid}`);
-
-            return cid;
-        } catch (uploadError) {
-            if (uploadError.message?.includes('not authorized') || uploadError.message?.includes('no proofs')) {
-                console.error('❌ Authorization needed!');
-                console.error('\n💡 Run this command first:');
-                console.error('w3 up test.txt');
-                console.error('\nThis will set up your authentication properly.');
-            } else {
-                console.error('❌ Upload error:', uploadError.message);
-            }
-            throw uploadError;
+            console.log('\n💡 Access your document:');
+            console.log(`Document IPFS URL: ${result.ipfsUrl}`);
+            console.log(`Metadata: ${result.ipfsUrl}/metadata.json`);
+        } else {
+            throw new Error('Document verification failed');
         }
+
+        return result;
+
     } catch (error) {
-        console.error('❌ Error:', error.message);
+        if (error.message?.includes('not authorized')) {
+            console.error('❌ Web3.Storage authorization needed!');
+            console.error('\n💡 Run these commands first:');
+            console.error('1. w3 login kalhara.s.thabrew@gmail.com');
+            console.error('2. w3 space create trustify');
+            console.error('3. Update the spaceDid in DocumentManager.js');
+        } else {
+            console.error('❌ Upload failed:', error.message);
+            console.error('\n💡 Make sure you have:');
+            console.error('1. Added DOCUMENTS_CONTRACT address to .env');
+            console.error('2. Added RPC_URL to .env');
+            console.error('3. Deployed the IdentityDocuments contract');
+        }
         process.exit(1);
     }
 }
 
-// Run the function with a file path argument
-if (!process.argv[2]) {
-    console.error('❌ Please provide a file path:');
-    console.error('node scripts/uploadFile.js path/to/your/file');
+// Check command line arguments
+if (process.argv.length < 5) {
+    console.error('❌ Please provide all required arguments:');
+    console.error('node scripts/uploadFile.js <document_type> <file_path> <wallet_address>');
+    console.error('\nSupported document types:', Object.keys(DOCUMENT_TYPES).join(', '));
     process.exit(1);
 }
 
-uploadFile(process.argv[2]);
+const [,, docType, filePath, walletAddress] = process.argv;
+
+// Validate document type
+if (!DOCUMENT_TYPES[docType]) {
+    console.error('❌ Invalid document type');
+    console.error('Supported types:', Object.keys(DOCUMENT_TYPES).join(', '));
+    process.exit(1);
+}
+
+uploadIdentityDocument(DOCUMENT_TYPES[docType], filePath, walletAddress);
