@@ -16,8 +16,8 @@ module.exports = {
     skale: {
       url: process.env.RPC_URL || "https://testnet.skalenodes.com/v1/giant-half-dual-testnet",
       accounts: process.env.PRIVATE_KEY ? [`0x${process.env.PRIVATE_KEY}`] : [],
+      gasPrice: 100000000, // 0.1 Gwei
       gas: 8000000,
-      gasPrice: 0, // SKALE has 0 gas fees
       timeout: 60000 // Increase timeout for SKALE network
     }
   },
