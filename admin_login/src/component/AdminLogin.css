@@ -1,172 +1,193 @@
-/* Admin Login Page Styling */
 .admin-login-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background-color: #d3e2e4;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     height: 100vh;
-    background: #f4f4f4;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
   }
-  
   .admin-login-header {
-    text-align: center;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    flex: 1;
   }
   
-  .admin-login-header p {
-    font-size: 18px;
-    color: #666;
+  .admin-login-container p {
+    font-size: 34px;
+    font-weight: bolder;
+    margin-left: 20px;
+    line-height: 0.5px;
+    color: #000000;
   }
   
-  .admin-login-header h1 {
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
+  .admin-login-container h1 {
+    margin-top: 2px;
+    letter-spacing: 3px;
+    color: #000000;
+    font-weight: bolder;
+    margin-left: 20px;
   }
   
-  .admin-login-header span {
-    color: #4caf50;
+  .admin-login-container h1 span {
+    font-size: 102px;
+    display: inline-block;
+    opacity: 0;
+    animation: fadeInOutLetter 10s infinite;
   }
   
-  /* Admin Login Form */
+  
+  
+  
   .admin-login-form {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 350px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid rgb(0, 0, 0);
+    box-shadow: 10px 10px 35px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    flex: 1;
+    margin-right: 180px;
   }
   
   .admin-login-form h2 {
+    font-size: 34px;
+    color: #000000;
+    text-align: center;
     margin-bottom: 20px;
-    color: #333;
   }
   
-  .admin-input-field {
-    width: 100%;
+  
+  .admin-login-form input {
+    width: 90%;
     padding: 12px;
     margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 2px solid #000000;
+    border-radius: 50px;
     font-size: 16px;
   }
   
-  .admin-login-button {
-    width: 100%;
-    background: #4caf50;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .admin-login-button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .admin-login-button:hover:not(:disabled) {
-    background: #388e3c;
-  }
-  
-  /* Super Admin Link */
-  .super-admin-link {
-    margin-top: 10px;
-    color: #007bff;
-    cursor: pointer;
+  .admin-login-form .super-admin-link {
+    display: block;
+    text-align: center;
     font-size: 14px;
+    color: #096bd3;
+    font-weight: bolder;
+    cursor: pointer;
   }
   
-  .super-admin-link span:hover {
+  .admin-login-form .super-admin-link:hover {
     text-decoration: underline;
   }
   
-  /* OTP Modal */
+  .admin-login-form .admin-login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    border: 1px solid white;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .admin-login-form .admin-login-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .account-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+  }
+  .user-login-buttom {
+    padding: 12px 20px;
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .account-link button:hover {
+    background-color: #0056b3;
+  }
   .otp-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    z-index: 1000;
   }
   
   .otp-modal-content {
-    background: white;
-    padding: 25px;
+    background-color: #ffffff;
+    padding: 10px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    max-width: 400px;
     text-align: center;
-    width: 320px;
   }
   
   .otp-modal-content h2 {
-    margin-bottom: 10px;
+    font-size: 34px;
+    color: #000000;
   }
   
-  .otp-input-field {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  .otp-modal-content .otp-input-field {
+    padding: 12px;
+    margin-top: 20px;
+    width: 50%;
+    border-radius: 30px;
+    border: 1px solid #ddd;
     font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: black;
     text-align: center;
+    background-color: #f8f8f8;
   }
   
-  .otp-error-message {
+  .otp-modal-content .otp-error-message {
+    display: block;
+    margin-top: 10px;
     color: red;
     font-size: 14px;
-    margin-top: 5px;
-    display: block;
   }
   
-  .verify-otp-button {
-    width: 100%;
-    background: #ff9800;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .verify-otp-button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .verify-otp-button:hover:not(:disabled) {
-    background: #e68900;
-  }
-  
-  /* User Login Button */
-  .account-link {
+  .otp-modal-content .otp-modal-buttons {
     margin-top: 20px;
   }
   
-  .user-login-buttom {
-    background: #2196f3;
+  .otp-modal-content .verify-otp-button {
+    padding: 12px 20px;
+    background-color: #007bff;
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
     font-size: 16px;
+    width: 60%;
+    font-weight: bolder;
+    letter-spacing: 5px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: background 0.3s;
   }
   
-  .user-login-buttom:hover {
-    background: #0b7dda;
+  .modal-content .verify-otp-button:hover {
+    background-color: #0056b3;
   }
+  
+  
   
