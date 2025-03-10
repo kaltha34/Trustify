@@ -46,28 +46,31 @@ const ImportantTermsPage = () => {
 
 const styles = {
   container: {
-    marginLeft: "250px",  // Make space for the sidebar
-    padding: "20px",
-    backgroundColor: "#f4f4f4",
+    marginLeft: "270px",  // Make space for the sidebar
+    padding: "20px 40px 20px 20px",
     height: "100vh",
   },
   header: {
-    fontSize: "2rem",
+    fontSize: "3rem",
     fontWeight: "bold",
     marginBottom: "20px",
     textAlign: "center",
-    color:"black",
+    letterSpacing: "3px",
   },
   content: {
     display: "flex",
-    flexDirection: "column",
+    flexWrap: "wrap",
     gap: "20px",
+    marginTop: "50px",
+    justifyContent: "center",
   },
   card: {
     backgroundColor: "#e0e0e0",
     padding: "20px",
-    borderRadius: "20px",
-    boxShadow: "0px 4px 8px rgba(0,0,0,0.1)",
+    width: "45%",
+    minWidth: "250px",
+    borderRadius: "10px",
+    boxShadow: "0px 4px 8px rgba(0,0,0,0.5)",
   },
   termTitle: {
     fontSize: "1.5rem",
