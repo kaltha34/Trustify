@@ -152,7 +152,12 @@ exports.adminLogin = async (req, res) => {
 
     const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    return res.status(200).json({ message: "OTP sent to email", token });
+    return res.status(200).json({ 
+      message: "OTP sent to email",
+      token,
+      user: { name: user.name, email: user.email },
+      
+      });
   } catch (error) {
     console.error("Error in adminLogin:", error.message);
     return res.status(500).json({ error: error.message });
