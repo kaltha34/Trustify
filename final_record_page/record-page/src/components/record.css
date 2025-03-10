@@ -1,7 +1,7 @@
 /* Record Page (Content Area) */
 .record-container {
     margin-left:150px;
-    margin-right:55px;
+    margin-right:50px;
     padding: 20px;
     max-width: calc(100% - 250px); /* Ensure the content width adjusts dynamically */
     background: #ffffff;
