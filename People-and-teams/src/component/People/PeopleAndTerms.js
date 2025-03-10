@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaFileAlt } from "react-icons/fa";
-import "./PeopleAndTerms.css"; // Import the CSS file
+
 
 const PeopleAndTerms = ({ darkMode }) => {
   const navigate = useNavigate();
