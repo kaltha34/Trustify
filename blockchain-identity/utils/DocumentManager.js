@@ -1,55 +1,126 @@
-import { create } from '@web3-storage/w3up-client';
 import { ethers } from 'ethers';
-import * as fs from 'fs';
+import fs from 'fs';
 import path from 'path';
+import FormData from 'form-data';
+import fetch from 'node-fetch';
+import dotenv from 'dotenv';
 
-// ABI for the IdentityDocuments contract
+dotenv.config();
+
 const IDENTITY_DOCUMENTS_ABI = [
     "function uploadDocument(uint8 _docType, string memory _ipfsHash) public",
-    "function getDocument(address _user, uint8 _docType) public view returns (tuple(uint8 docType, string ipfsHash, uint256 timestamp, bool isValid))",
+    "function getDocument(address _user, uint8 _docType) public view returns (string memory ipfsHash, uint256 timestamp, bool isValid, bool isVerified, address verifiedBy)",
     "function hasValidDocument(address _user, uint8 _docType) public view returns (bool)",
-    "event DocumentUploaded(address indexed user, uint8 docType, string ipfsHash)"
+    "function verifyDocument(address _user, uint8 _docType) external",
+    "function revokeDocument(uint8 _docType) public",
+    "function isVerifier(address _address) public view returns (bool)"
 ];
 
+const PINATA_API_URL = 'https://api.pinata.cloud';
+
+// Document types enum matching the smart contract
+const DocumentType = {
+    NIC: 0,
+    BIRTH_CERTIFICATE: 1,
+    PASSPORT: 2
+};
+
 export class DocumentManager {
-    constructor(contractAddress, providerUrl) {
-        this.contractAddress = contractAddress;
-        this.providerUrl = providerUrl;
-        this.documentTypes = {
-            NIC: 0,
-            BIRTH_CERTIFICATE: 1,
-            PASSPORT: 2
-        };
+    constructor(contractAddress, rpcUrl) {
+        this.contractAddress = "0xF84098EE1b988D6ddC6ab5864E464A97a15913C5"; 
+        this.rpcUrl = rpcUrl;
+        this.contract = null;
     }
 
     async initialize() {
-        // Initialize Web3.Storage client
-        this.storageClient = await create();
-        this.spaceDid = 'did:key:z6Mkhi9HRVD3LGqEG2KuNFgZzC8BVyvcejP4XyHac29dzhA9';
-        await this.storageClient.setCurrentSpace(this.spaceDid);
+        if (!process.env.PINATA_API_KEY || !process.env.PINATA_API_SECRET) {
+            throw new Error('PINATA_API_KEY or PINATA_API_SECRET not found in .env file');
+        }
 
-        // Initialize Ethereum provider and contract
-        this.provider = new ethers.JsonRpcProvider(this.providerUrl);
-        this.contract = new ethers.Contract(
-            this.contractAddress,
-            IDENTITY_DOCUMENTS_ABI,
-            this.provider
-        );
+        try {
+            // Initialize contract
+            const provider = new ethers.JsonRpcProvider(this.rpcUrl);
+            const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+            this.contract = new ethers.Contract(this.contractAddress, IDENTITY_DOCUMENTS_ABI, signer);
+            console.log('DocumentManager initialized with contract:', this.contractAddress);
+        } catch (error) {
+            console.error('Error initializing DocumentManager:', error);
+            throw error;
+        }
+    }
+
+    async uploadToIPFS(fileContent, metadata) {
+        try {
+            // Create a single JSON file containing both the document and metadata
+            const formData = new FormData();
+            
+            // Convert file content to base64
+            const base64Content = fileContent.toString('base64');
+            
+            // Create a combined payload
+            const payload = {
+                document: base64Content,
+                metadata: metadata
+            };
+
+            // Add the combined JSON file
+            formData.append('file', Buffer.from(JSON.stringify(payload, null, 2)), {
+                filename: 'document.json',
+                contentType: 'application/json'
+            });
+
+            // Add pinata metadata
+            formData.append('pinataMetadata', JSON.stringify({
+                name: `Trustify Identity Document - ${metadata.type}`,
+                keyvalues: {
+                    app: 'trustify',
+                    type: 'identity',
+                    docType: metadata.type,
+                    owner: metadata.owner
+                }
+            }));
+
+            // Upload to Pinata
+            const response = await fetch(`${PINATA_API_URL}/pinning/pinFileToIPFS`, {
+                method: 'POST',
+                headers: {
+                    'pinata_api_key': process.env.PINATA_API_KEY,
+                    'pinata_secret_api_key': process.env.PINATA_API_SECRET
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.text();
+                throw new Error(`Failed to upload to Pinata: ${error}`);
+            }
+
+            const result = await response.json();
+            return result.IpfsHash;
+
+        } catch (error) {
+            console.error('IPFS upload error:', error);
+            throw new Error(`Failed to upload to IPFS: ${error.message}`);
+        }
     }
 
     async uploadDocument(docType, filePath, walletAddress) {
-        try {
-            // Validate inputs
-            if (!(docType in this.documentTypes)) {
-                throw new Error(`Invalid document type. Supported types: ${Object.keys(this.documentTypes).join(', ')}`);
-            }
-            if (!fs.existsSync(filePath)) {
-                throw new Error(`File not found: ${filePath}`);
-            }
-            if (!ethers.isAddress(walletAddress)) {
-                throw new Error('Invalid Ethereum address');
-            }
+        if (!this.contract) {
+            throw new Error('DocumentManager not initialized. Call initialize() first.');
+        }
 
+        // Validate inputs
+        if (!(docType in DocumentType)) {
+            throw new Error(`Invalid document type. Supported types: ${Object.keys(DocumentType).join(', ')}`);
+        }
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`File not found: ${filePath}`);
+        }
+        if (!ethers.isAddress(walletAddress)) {
+            throw new Error('Invalid Ethereum address');
+        }
+
+        try {
             // Create metadata
             const metadata = {
                 type: docType,
@@ -58,81 +129,73 @@ export class DocumentManager {
                 filename: path.basename(filePath)
             };
 
-            // Read file and create File objects
+            // Read file content
             const fileContent = await fs.promises.readFile(filePath);
-            const fileName = path.basename(filePath);
             
-            // Create document and metadata files
-            const documentFile = new File([fileContent], fileName);
-            const metadataFile = new File(
-                [JSON.stringify(metadata, null, 2)],
-                'metadata.json',
-                { type: 'application/json' }
-            );
+            // Upload to IPFS
+            console.log(' Uploading to IPFS via Pinata...');
+            const cid = await this.uploadToIPFS(fileContent, metadata);
+            console.log(' Files uploaded to IPFS:', cid);
 
-            // Upload to Web3.Storage
-            console.log(`🔹 Uploading ${docType} document to IPFS...`);
-            const cid = await this.storageClient.uploadDirectory([documentFile, metadataFile]);
-
-            // Store reference in blockchain
-            console.log('🔹 Storing document reference in blockchain...');
-            const tx = await this.contract.uploadDocument(
-                this.documentTypes[docType],
-                cid
-            );
+            // Store in blockchain
+            console.log(' Storing document reference in blockchain...');
+            const tx = await this.contract.uploadDocument(DocumentType[docType], cid);
             await tx.wait();
-
-            const documentInfo = {
-                type: docType,
-                owner: walletAddress,
-                ipfsHash: cid,
-                ipfsUrl: `https://w3s.link/ipfs/${cid}`,
-                timestamp: new Date().toISOString()
-            };
-
-            console.log('\n✅ Document uploaded successfully!');
-            console.log('📝 Document details:', JSON.stringify(documentInfo, null, 2));
-
-            return documentInfo;
-
-        } catch (error) {
-            console.error('❌ Upload failed:', error.message);
-            throw error;
-        }
-    }
-
-    async getDocument(walletAddress, docType) {
-        try {
-            if (!(docType in this.documentTypes)) {
-                throw new Error(`Invalid document type. Supported types: ${Object.keys(this.documentTypes).join(', ')}`);
-            }
-
-            const doc = await this.contract.getDocument(walletAddress, this.documentTypes[docType]);
-            
-            if (!doc.isValid) {
-                throw new Error('Document not found or has been revoked');
-            }
+            console.log(' Document reference stored in blockchain');
 
             return {
-                type: docType,
+                docType,
+                ipfsHash: cid,
+                ipfsUrl: `https://gateway.pinata.cloud/ipfs/${cid}`,
                 owner: walletAddress,
-                ipfsHash: doc.ipfsHash,
-                ipfsUrl: `https://w3s.link/ipfs/${doc.ipfsHash}`,
-                timestamp: new Date(doc.timestamp * 1000).toISOString(),
-                isValid: doc.isValid
+                timestamp: metadata.timestamp
             };
 
         } catch (error) {
-            console.error('❌ Error fetching document:', error.message);
+            console.error(' Upload failed:', error.message);
             throw error;
         }
     }
 
     async verifyDocument(walletAddress, docType) {
+        if (!this.contract) {
+            throw new Error('DocumentManager not initialized. Call initialize() first.');
+        }
+
+        if (!(docType in DocumentType)) {
+            throw new Error(`Invalid document type. Supported types: ${Object.keys(DocumentType).join(', ')}`);
+        }
+
         try {
-            return await this.contract.hasValidDocument(walletAddress, this.documentTypes[docType]);
+            const doc = await this.contract.getDocument(walletAddress, DocumentType[docType]);
+            return doc.isValid && doc.isVerified;
         } catch (error) {
-            console.error('❌ Error verifying document:', error.message);
+            console.error(' Verification failed:', error.message);
+            throw error;
+        }
+    }
+
+    async getDocument(walletAddress, docType) {
+        if (!this.contract) {
+            throw new Error('DocumentManager not initialized. Call initialize() first.');
+        }
+
+        if (!(docType in DocumentType)) {
+            throw new Error(`Invalid document type. Supported types: ${Object.keys(DocumentType).join(', ')}`);
+        }
+
+        try {
+            const doc = await this.contract.getDocument(walletAddress, DocumentType[docType]);
+            return {
+                ipfsHash: doc.ipfsHash,
+                timestamp: doc.timestamp.toString(),
+                isValid: doc.isValid,
+                isVerified: doc.isVerified,
+                verifiedBy: doc.verifiedBy,
+                ipfsUrl: `https://gateway.pinata.cloud/ipfs/${doc.ipfsHash}`
+            };
+        } catch (error) {
+            console.error(' Error retrieving document:', error.message);
             throw error;
         }
     }

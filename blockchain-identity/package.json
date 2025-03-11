@@ -30,7 +30,7 @@
     "ipfs-http-client": "^60.0.1",
     "mime": "^4.0.6",
     "nft.storage": "^7.2.0",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "web3.storage": "^4.5.5"
   }
 }
