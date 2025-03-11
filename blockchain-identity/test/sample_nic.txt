@@ -1,5 +1,0 @@
-This is a sample National Identity Card document for testing purposes.
-Owner: Test User
-NIC Number: 199912345678
-Date of Birth: 1999-01-01
-Address: 123 Test Street, Test City
