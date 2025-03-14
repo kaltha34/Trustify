@@ -1,0 +1,12 @@
+# Ignore node_modules and build files
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+node_modules/
+.env
+
+# Ignore VS Code settings
+.vscode/
