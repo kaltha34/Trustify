@@ -4,9 +4,20 @@
   padding-left: 2rem;
   padding-right: 1rem;
   min-height: 100vh;
+
   flex-direction: column;
   display: flex;
   justify-content: space-between;
+}
+.status {
+  top: 50px;
+  margin-top: 30px;
+}
+.status p {
+  text-align: left;
+  padding-left: 20px;
+  font-weight: bolder;
+  letter-spacing: 1px;
 }
 
 .dashboard-header {
@@ -14,6 +25,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+}
+
+.Verifications-icons {
+  justify-content: center;
+  align-items: center;
+  margin-left: 555px;
+}
+.icon-container {
+  display: inline-block;
+  margin-left: 10px;
+  margin-top: 60px;
+  padding-left: 30px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .greeting-message {
@@ -93,15 +118,43 @@
 }
 
 .Verification-content {
-  border-radius: 20px;
-  background-color: rgb(56, 55, 55);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   height: 450px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
 }
-.light-mode .Verification-content {
-  background-color: white;
+.Verification-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
+.light-mode .Verification-content {
+  background: linear-gradient(135deg, #d4cece, #f3e9e9);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.verification-icons {
+  display: flex;
+  justify-content: center; /* Centers icons horizontally */
+  align-items: center; /* Centers icons vertically */
+  gap: 10px; /* Optional: space between the icons */
+  margin-top: 20px;
+  margin-left: -35px;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.help-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 10;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .Dashboard-body {
@@ -126,7 +179,7 @@
 }
 
 .verify-button {
-  background-color: black;
+  background: linear-gradient(90deg, #ff8c00, #ff5700);
   color: white;
   margin-top: 5px;
   margin-left: 5px;
@@ -137,6 +190,11 @@
   font-size: 18px;
   letter-spacing: 2px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.verify-button:hover {
+  background: linear-gradient(90deg, #ff5700, #ff8c00);
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
 }
 
 .light-mode .verify-button {
@@ -328,4 +386,62 @@
 
 .social-icons a:hover {
   color: #bbbbbb;
+}
+
+.upcoming-features {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.upcoming-features h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.features-list {
+  display: flex;
+  justify-content: flex-start;
+  animation: scroll 15s linear infinite;
+}
+
+.feature-card {
+  background-color: #3a3a3a;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+  flex-shrink: 0;
+  width: 250px;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-card h3 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.release-date {
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  font-size: 16px;
+  color: #333;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0); /* Start at the beginning */
+  }
+  100% {
+    transform: translateX(-50%); /* Move all the way to the left */
+  }
 }

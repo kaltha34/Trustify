@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import { Facebook, Linkedin, Instagram, Mail, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserShield, FaExclamationTriangle } from "react-icons/fa";
+import { FaUserShield, FaQuestionCircle } from "react-icons/fa";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import io from "socket.io-client";
 import { motion } from "framer-motion";
+import { Rocket, Lock, Star } from "lucide-react";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,29 @@ const Dashboard = () => {
     localStorage.removeItem("IsuserToken");
     navigate("/login");
   };
+
+  const upcomingFeatures = [
+    {
+      title: "Feature 1: Dark Mode",
+      releaseDate: "March 20, 2025",
+      description: "Switch between light and dark themes for the app.",
+    },
+    {
+      title: "Feature 2: Multi-language Support",
+      releaseDate: "April 10, 2025",
+      description: "Add support for multiple languages.",
+    },
+    {
+      title: "Feature 3: Real-time Notifications",
+      releaseDate: "May 5, 2025",
+      description: "Get notified instantly about key activities.",
+    },
+    {
+      title: "Feature 4: Profile Customization",
+      releaseDate: "June 1, 2025",
+      description: "Customize your profile with themes, colors, etc.",
+    },
+  ];
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -140,7 +164,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Verification Status Section */}
         <div className="Verifications">
           <div className="Verification-content">
             <h2>Verifications</h2>
@@ -149,7 +172,26 @@ const Dashboard = () => {
                 label="Select Date"
                 value={selectedDate}
                 onChange={(newValue) => setSelectedDate(newValue)}
-                renderInput={(params) => <TextField {...params} fullWidth />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    sx={{
+                      backgroundColor: "#f0f0f0",
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "blue",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "green",
+                        },
+                      },
+                      "& .MuiInputBase-input": {
+                        color: "#333",
+                      },
+                    }}
+                  />
+                )}
               />
             </LocalizationProvider>
             <div className="status">
@@ -163,6 +205,43 @@ const Dashboard = () => {
             <div className="status">
               <span className="dots in-progress"></span>
               <p>In Progress : {inprogress}</p>
+            </div>
+
+            {/* Verification Icons Section */}
+            <div className="verification-icons">
+              <motion.div
+                className="icon-container"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <Rocket size={45} />
+              </motion.div>
+              <motion.div
+                className="icon-container"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 1.2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <Lock size={45} />
+              </motion.div>
+              <motion.div
+                className="icon-container"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 1.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <Star size={45} />
+              </motion.div>
             </div>
           </div>
         </div>
@@ -187,11 +266,7 @@ const Dashboard = () => {
                   ))}
                 </ul>
               ) : (
-                <p>
-                  {" "}
-                  <FaExclamationTriangle className="notification-icon" /> No new
-                  notifications
-                </p>
+                <p> 📩 No new notifications</p>
               )}
             </div>
             <div className="recent">
@@ -202,7 +277,25 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
+      <div className="upcoming-features">
+        <h2>Upcoming Features</h2>
+        <div className="features-list">
+          {upcomingFeatures.map((feature, index) => (
+            <div key={index} className="feature-card">
+              <h3>{feature.title}</h3>
+              <p className="release-date">{feature.releaseDate}</p>
+              <p>{feature.description}</p>
+            </div>
+          ))}
+          {upcomingFeatures.map((feature, index) => (
+            <div key={index + upcomingFeatures.length} className="feature-card">
+              <h3>{feature.title}</h3>
+              <p className="release-date">{feature.releaseDate}</p>
+              <p>{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
       {/* Footer */}
       <div className="Dashboard-Footer">
         <div className="footer-logo">TRUSTIFY</div>
@@ -264,6 +357,11 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="help-button">
+        <Link to="/helpcenter">
+          <FaQuestionCircle size={50} color="#fff" />
+        </Link>
       </div>
     </div>
   );
