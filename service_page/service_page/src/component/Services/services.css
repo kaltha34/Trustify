@@ -91,7 +91,7 @@
 }
 
 .service-icon {
-  background-color: #004d4d;
+  background-color: #066e6e;
   color: white;
   width: 60px;
   height: 60px;
@@ -112,7 +112,7 @@
 .service-card h3 {
   font-size: 1.4rem;
   margin-bottom: 1rem;
-  color: #004d4d;
+  color: #167b7b;
   font-weight: 600;
 }
 
@@ -153,7 +153,7 @@
 
 .stat-item h4 {
   font-size: 2rem;
-  color: #004d4d;
+  color: #149292;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -178,7 +178,7 @@
 }
 
 .dark-mode .services-header h1 span {
-  color: #176f85;
+  color: #2195b2;
 }
 
 .dark-mode .services-subtitle,
@@ -198,13 +198,13 @@
 }
 
 .dark-mode .service-icon {
-  background-color: #176f85;
+  background-color: #2195b2;
 }
 
 .dark-mode .service-card h3,
 .dark-mode .learn-more,
 .dark-mode .stat-item h4 {
-  color: #176f85;
+  color:#2195b2;
 }
 
 .dark-mode .card-decoration {
