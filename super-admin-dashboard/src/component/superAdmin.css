@@ -1,5 +1,5 @@
 .SuperAdminDashboard {
-  background-color: rgb(80, 80, 80);
+  background: linear-gradient(135deg, #a9c0c3, #2d99ac);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +12,8 @@
 
 .SuperAdmin-content h1 {
   color: white;
-  font-size: 32px;
+  font-size: 42px;
+  text-align: center;
 }
 .grid-container {
   display: grid;
@@ -22,7 +23,7 @@
 }
 
 .Admins {
-  background-color: #f4f4f4;
+  background: linear-gradient(95deg, #dccaca, #b8b6b6);
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -31,7 +32,7 @@
 }
 
 .Added-admins {
-  background-color: #f4f4f4;
+  background: linear-gradient(95deg, #dccaca, #b8b6b6);
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -62,6 +63,7 @@
   padding-right: 10px;
   list-style-type: none;
   margin: 0;
+  color: white;
   padding-left: 0;
 }
 
@@ -75,15 +77,24 @@
 .added-admin-item,
 .admin-item {
   display: flex;
-  justify-content: space-between; /* Ensures text and button are aligned */
-  align-items: center; /* Aligns items vertically */
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: linear-gradient(95deg, #dccaca, #b8b6b6);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 15px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.added-admin-item:hover,
+.admin-item:hover {
+  transform: scale(1.01);
 }
 
 .assign-btn {
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   padding: 5px 10px;
   border-radius: 50px;
@@ -137,34 +148,15 @@
 .modal-text {
   font-weight: bold;
 }
-button {
-  border-radius: 30px;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #545252;
-  color: white;
-}
 
 .assign-btn {
-  background-color: #4caf50; /* Green color */
-  color: white;
+  background-color: #a3e1a5; /* Green color */
+  color: rgb(0, 0, 0);
   border: none;
   padding: 5px 10px;
   cursor: pointer;
 }
-.model-yes {
-  background-color: rgb(41, 136, 41);
-  color: white;
-}
 
-.model-cancel {
-  background-color: rgb(189, 50, 50);
-  color: white;
-}
 .no-results {
   color: red;
 
@@ -181,4 +173,45 @@ button:hover {
 
 .clear-icon:hover {
   color: #333;
+}
+
+.model-yes,
+.model-cancel {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin: 10px;
+  min-width: 120px;
+}
+
+/* Yes Button */
+.model-yes {
+  background-color: #4caf50;
+  color: white;
+}
+
+.model-yes:hover {
+  background-color: #45a049;
+}
+
+.model-yes:active {
+  background-color: #388e3c;
+}
+
+/* Cancel Button */
+.model-cancel {
+  background-color: #f44336;
+  color: white;
+}
+
+.model-cancel:hover {
+  background-color: #d32f2f;
+}
+
+.model-cancel:active {
+  background-color: #b71c1c;
 }

@@ -1,6 +1,8 @@
 const express = require("express");
 const User = require("../models/User");
 const Admin = require("../models/Admin");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -19,10 +21,8 @@ router.get("/users/regular", async (req, res) => {
 // Fetch all admins
 router.get("/admins", async (req, res) => {
   try {
-    const admins = await Admin.find().sort({
-      role: "super-admin",
-      createdAt: -1,
-    });
+    const admins = await Admin.find().sort({ createdAt: -1 });
+
     res.status(200).json(admins);
   } catch (error) {
     res
@@ -204,9 +204,7 @@ router.post("/create-super-admin", async (req, res) => {
 router.get("/super-admin", async (req, res) => {
   try {
     const superAdmin = await Admin.findOne({ role: "super-admin" });
-    if (!superAdmin) {
-      superAdmin = await User.findOne({ role: "super-admin" });
-    }
+
     if (!superAdmin) {
       return res.status(404).json({ message: "Super Admin not found" });
     }

@@ -1,5 +1,4 @@
 import "./SignUp.css";
-import { FaGoogle, FaApple, FaEnvelope } from "react-icons/fa";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

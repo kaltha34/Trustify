@@ -12,27 +12,36 @@ import {
   Sun,
   Moon,
   Menu,
+  UploadCloud,
 } from "lucide-react";
 import "./Sidebar.css";
 
 const Sidebar = () => {
   const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
+  const [profilePhoto, setProfilePhoto] = useState("/default-profile.png");
   const [isOpen, setIsOpen] = useState(window.innerWidth > 1024);
 
   useEffect(() => {
     const fetchUser = async () => {
       const storedData = JSON.parse(localStorage.getItem("IsUserLogging"));
-      if (!storedData || !storedData.token) return;
+      if (!storedData || !storedData.token) {
+        setUser(null);
+        return;
+      }
 
       try {
-        const res = await fetch("http://localhost:5000/api/auth/user", {
+        const res = await fetch("http://localhost:5000/api/users/regular", {
           method: "GET",
           headers: { Authorization: storedData.token },
         });
 
         const data = await res.json();
-        if (res.ok) setUser(data);
+        if (res.ok) {
+          setUser(data);
+          if (data.profileImage)
+            setProfilePhoto(`http://localhost:5000${data.profileImage}`);
+        }
       } catch (error) {
         console.error("Error fetching user:", error);
       }
@@ -40,6 +49,29 @@ const Sidebar = () => {
 
     fetchUser();
   }, []);
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profileImage", file);
+    formData.append("email", user.email);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/upload-profile", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setProfilePhoto(`http://localhost:5000${data.profileImage}`);
+      }
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
+    }
+  };
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", darkMode);
@@ -95,6 +127,28 @@ const Sidebar = () => {
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="profile">
           <div className="profile-info">
+            <label htmlFor="profile-upload" className="profile-image-label">
+              <img
+                src={profilePhoto}
+                alt="Profile"
+                className="profile-image"
+                style={
+                  profilePhoto === "/default-profile.png"
+                    ? { display: "none" }
+                    : {}
+                }
+              />
+              {profilePhoto === "/default-profile.png" && (
+                <UploadCloud size={34} className="upload-icon" />
+              )}
+            </label>
+            <input
+              type="file"
+              id="profile-upload"
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{ display: "none" }}
+            />
             {user ? (
               <>
                 <p>{user.name}</p>

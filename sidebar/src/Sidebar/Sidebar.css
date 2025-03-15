@@ -1,23 +1,46 @@
 .profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.profile-image-label {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  margin-top: 15px;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: 2px solid #ddd;
 }
+
 .profile-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  border-radius: 50%;
 }
-.profile-info h3 {
-  font-size: 1rem;
-  margin: 0;
+
+.upload-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #888;
+  font-size: 54px;
 }
+
 .profile-info p {
   font-size: 0.88rem;
-  margin: 0;
+  margin-top: 10px;
   opacity: 0.8;
 }
 
@@ -121,7 +144,6 @@
   background-color: black;
 }
 
-/* Theme Toggle Buttons */
 .theme-toggle-buttons {
   margin-left: 15px;
   width: 180px;
@@ -179,22 +201,21 @@
   transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-.close-icon {
-  color: #ff4d4d; /* Red color for the close icon */
-  width: 32px;
-  height: 32px;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
 .menu-btn svg {
   color: #fff;
   width: 30px;
   height: 30px;
   transition: transform 0.3s ease-in-out;
 }
+.light-mode .menu-btn svg {
+  color: #000;
+}
 
 .menu-btn:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+.sidebar.open + .menu-btn {
+  display: none;
 }
 
 @media (min-width: 1024px) {
@@ -203,7 +224,6 @@
   }
 }
 
-/* Rotate effect when switching icons */
 .menu-btn .lucide-menu {
   transform: rotate(0deg);
 }
