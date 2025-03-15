@@ -1,0 +1,143 @@
+.admin-panel {
+  padding: 20px;
+  color: white;
+}
+
+.admin-panel h2 {
+  text-align: center;
+  margin-left: 280px;
+}
+
+.light-mode h2 {
+  color: black; /* Black color when light mode is active */
+}
+
+/* Dark mode - Admin Panel heading color */
+.dark-mode h2 {
+  color: white; /* White color when dark mode is active */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 50px;
+  padding: 20px;
+  margin-left: 310px;
+}
+
+.grid-item {
+  background-color: #373333;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  min-height: 250px;
+  position: relative;
+}
+
+.grid-item h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.grid-item p {
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+/* Light mode styles */
+.light-mode .grid-item {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  color: black;
+}
+
+.light-mode .grid-item h3,
+.light-mode .grid-item p {
+  color: black;
+}
+
+/* Dark mode styles */
+.dark-mode .grid-item {
+  background-color: #373333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
+.dark-mode .grid-item h3,
+.dark-mode .grid-item p {
+  color: white;
+}
+
+.status-btn button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.status-btn button:hover {
+  background-color: #005f72;
+}
+
+/* Admin Panel containers */
+.grid-item div {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.grid-item p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: inherit; /* Ensure the text color is inherited from the theme (light or dark) */
+}
+
+.grid-item p strong {
+  font-weight: bold;
+}
+
+/* Style for profile picture */
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 100px;
+  object-fit: cover;
+}
+
+/* Status toggle button */
+.status-toggle {
+  position: absolute;
+  top: -20px;
+  right: 10px;
+}
+
+.status-btn {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border: none;
+}
+
+.online {
+  background-color: green;
+  color: white;
+}
+
+.offline {
+  background-color: red;
+  color: white;
+}
+
+.online:hover {
+  background-color: darkgreen;
+}
+
+.offline:hover {
+  background-color: darkred;
+}

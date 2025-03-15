@@ -1,0 +1,352 @@
+.admin-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d3e2e4;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100vh;
+  box-sizing: border-box;
+}
+.admin-login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  flex: 1;
+}
+
+.admin-login-container p {
+  font-size: 34px;
+  font-weight: bolder;
+  margin-left: 20px;
+  line-height: 0.5px;
+  color: #000000;
+}
+
+.admin-login-container h1 {
+  margin-top: 2px;
+  letter-spacing: 3px;
+  color: #000000;
+  font-weight: bolder;
+  margin-left: 20px;
+}
+
+.admin-login-container h1 span {
+  font-size: 102px;
+  display: inline-block;
+  opacity: 0;
+  animation: fadeInOutLetter 10s infinite;
+}
+
+@keyframes fadeInOutLetter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.admin-login-container h1 span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.admin-login-container h1 span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.admin-login-container h1 span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.admin-login-container h1 span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.admin-login-container h1 span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+.admin-login-container h1 span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+
+.admin-login-container h1 span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+
+.admin-login-container h1 span:nth-child(8) {
+  animation-delay: 0.7s;
+}
+
+.admin-login-form {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  border: 2px solid rgb(0, 0, 0);
+  box-shadow: 10px 10px 35px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  flex: 1;
+  margin-right: 250px;
+}
+
+.admin-login-form h2 {
+  font-size: 34px;
+  color: #000000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@keyframes fadeInLetter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-login-form input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #000000;
+  border-radius: 50px;
+  font-size: 16px;
+}
+
+.admin-login-form .super-admin-link {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: #096bd3;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.admin-login-form .super-admin-link:hover {
+  text-decoration: underline;
+}
+
+.admin-login-form .admin-login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: black;
+  color: white;
+  font-size: 18px;
+  border: 1px solid white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.admin-login-form .admin-login-button:hover {
+  background-color: #0056b3;
+}
+
+.account-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+.user-login-buttom {
+  padding: 12px 20px;
+  background-color: black;
+  color: white;
+  font-weight: bolder;
+  border-radius: 50px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.account-link button:hover {
+  background-color: #0056b3;
+}
+.otp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.otp-modal-content {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.otp-modal-content h2 {
+  font-size: 34px;
+  color: #000000;
+}
+
+.otp-modal-content .otp-input-field {
+  padding: 12px;
+  margin-top: 20px;
+  width: 50%;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: black;
+  text-align: center;
+  background-color: #f8f8f8;
+}
+
+.otp-modal-content .otp-error-message {
+  display: block;
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+}
+
+.otp-modal-content .otp-modal-buttons {
+  margin-top: 20px;
+}
+
+.otp-modal-content .verify-otp-button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  width: 60%;
+  font-weight: bolder;
+  letter-spacing: 5px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.modal-content .verify-otp-button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .header p {
+    margin-top: 60px;
+    font-size: 25px;
+    text-align: left;
+  }
+  .header h1 {
+    font-size: 12px;
+  }
+  .LogIn-Container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .LogIn-Form {
+    padding: 40px;
+    max-width: 100%;
+    margin-left: 130px;
+  }
+
+  .LogIn-Form h2 {
+    font-size: 20px;
+  }
+
+  .LogIn-Form input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .LogIn-Form .SignUp-Button {
+    font-size: 14px;
+  }
+
+  .admin-login-button {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-content h2 {
+    font-size: 20px;
+  }
+
+  .modal-content .otp-input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .modal-content .verify-button {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .LogIn-Container h1 {
+    font-size: 28px;
+  }
+
+  .LogIn-Form h2 {
+    font-size: 18px;
+  }
+
+  .LogIn-Form input {
+    font-size: 14px;
+  }
+
+  .LogIn-Form .SignUp-Button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .admin-login-button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+  }
+
+  .modal-content .otp-input {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .modal-content .verify-button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+/* Media Query for 15-inch Laptops (1366px width) */
+@media (max-width: 1366px) {
+  .LogIn-Container {
+    padding: 20px;
+  }
+
+  .LogIn-Form {
+    width: 80%;
+  }
+}

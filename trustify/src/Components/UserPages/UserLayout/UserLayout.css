@@ -1,0 +1,12 @@
+.help-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 10;
+}
+.light-mode .help-icon {
+  background-color: black;
+  border-radius: 50px;
+  color: rgb(0, 0, 0); /* Color for dark mode */
+}
