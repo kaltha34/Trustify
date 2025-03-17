@@ -1,0 +1,138 @@
+.reply-container {
+    width: 50%;
+    margin: -650px auto;
+    margin-right: 200px;
+    padding: 50px;
+    background-color: #f9f9f9; 
+    border: 1px solid #555;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(85, 84, 84, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles for reply-container */
+.dark-mode .reply-container {
+    background-color: #222; 
+    color: white; 
+}
+
+.light-mode .reply-container{
+    border-color: #bbb;
+}
+.reply-container h2 {
+    margin-bottom: 10px;
+    
+}
+/* Default light mode styles */
+.reply-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles for reply-textarea */
+.dark-mode .reply-textarea {
+    background-color: #333; 
+    color: white; 
+    border: 1px solid #555;
+}
+
+/* Placeholder styling for light mode */
+.reply-textarea::placeholder {
+    color: #888; 
+    opacity: 1;
+}
+
+/* Placeholder styling for dark mode */
+.dark-mode .reply-textarea::placeholder {
+    color: #bbb; 
+    opacity: 1;
+}
+
+.reply-button {
+    margin-top: 30px;
+    padding: 12px 24px;
+    background: linear-gradient(to bottom, #0a8f32, #077325); 
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 6px #05581c; 
+    transition: all 0.2s ease-in-out;
+}
+
+.reply-button:hover {
+    background: linear-gradient(to bottom, #0cbf40, #0a8f32);
+    box-shadow: 0 8px #05581c;
+    transform: translateY(-5px); 
+}
+
+.reply-button:active {
+    background: linear-gradient(to bottom, #077325, #05581c);
+    box-shadow: 0 3px #033b12;
+    transform: translateY(3px); 
+}
+
+.user-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 35px;
+}
+
+.dark-mode .user-textarea {
+    background-color: #333; 
+    color: white; 
+    border: 1px solid #555;
+}
+
+.error-message {
+    color: red;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Shake animation for errors */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+/* Apply shake effect when an error occurs */
+.error-message.shake {
+    animation: shake 0.3s ease-in-out;
+}
