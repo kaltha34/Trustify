@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/Ticket');
 
-// Get all tickets (Admin use)
-router.get('/', async (req, res) => {
+// Get the latest ticket (Admin use)
+router.get('/latest', async (req, res) => {
     try {
-        const tickets = await Ticket.find();
-        res.json(tickets);
+        const latestTicket = await Ticket.findOne({ status: "Pending" }).sort({ createdAt: -1 });
+        if (!latestTicket) {
+            return res.json({ question: "No questions available", ticketId: null });
+        }
+        res.json({ question: latestTicket.issue, ticketId: latestTicket._id });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
