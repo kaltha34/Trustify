@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Home, Users, Sun, Moon, File, FileQuestion } from "lucide-react";
+import { Home, Users, Sun, Moon, File, FileQuestion,MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";  // Import Link from React Router
 import "./Sidebar.css";
 
@@ -21,6 +21,7 @@ const Sidebar = () => {
     { name: "Admin Panel", icon: <Users />, link: "/admin" },
     { name: "Documents", icon: <File />, link: "/documents" },
     { name: "FAQ", icon: <FileQuestion />, link: "/FAQ" },
+    { name: "Reply", icon:<MessageCircle/>},
   ];
 
   return (
