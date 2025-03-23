@@ -1,0 +1,53 @@
+name: CI/CD for Node.js Web App
+
+on:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - main  
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3  
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.9.0'  
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key:  ubuntu.os -node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ubuntu.os -node-modules-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test  
+
+  deploy:
+    needs: build-and-test  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to Server
+        env:
+          GIT_REPO: kaltha34/Trustify
+          
+        run: |
+          git pull origin main || exit 1
+          npm install || exit 1
+          pm2 restart your-app-trustify || exit 1
