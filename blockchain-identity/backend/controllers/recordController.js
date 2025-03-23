@@ -1,4 +1,10 @@
 import blockchainService from "../services/blockchainService.js";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import fs from 'fs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export const getApprovedRecords = async (req, res) => {
   try {
@@ -58,15 +64,49 @@ export const getDocuments = async (req, res) => {
 
 export const uploadDocument = async (req, res) => {
   try {
-    const { docType, filePath, walletAddress } = req.body;
-    if (!docType || !filePath || !walletAddress) {
-      return res.status(400).json({ error: "Document type, file path, and wallet address are required" });
+    console.log('Upload request received:', {
+      body: req.body,
+      file: req.file ? {
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+      } : 'No file'
+    });
+
+    const { docType, walletAddress } = req.body;
+    if (!docType || !walletAddress || !req.file) {
+      console.error('Missing required fields:', { docType, walletAddress, hasFile: !!req.file });
+      return res.status(400).json({ error: "Document type, wallet address, and file are required" });
     }
-    const result = await blockchainService.uploadDocument(docType, filePath, walletAddress);
-    res.json(result);
+
+    // Create temporary file from buffer
+    const tempDir = join(__dirname, '../temp');
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    const tempFilePath = join(tempDir, req.file.originalname);
+    console.log('Writing to temp file:', tempFilePath);
+    fs.writeFileSync(tempFilePath, req.file.buffer);
+
+    try {
+      console.log('Calling blockchain service with:', { docType, tempFilePath, walletAddress });
+      const result = await blockchainService.uploadDocument(docType, tempFilePath, walletAddress);
+      console.log('Upload successful:', result);
+      res.json(result);
+    } catch (error) {
+      console.error('Blockchain service error:', error);
+      res.status(500).json({ error: error.message || "Error uploading to blockchain" });
+    } finally {
+      // Clean up temp file
+      if (fs.existsSync(tempFilePath)) {
+        fs.unlinkSync(tempFilePath);
+        console.log('Temp file cleaned up');
+      }
+    }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: "Error uploading document" });
+    console.error('Upload controller error:', error);
+    res.status(500).json({ error: error.message || "Error uploading document" });
   }
 };
 

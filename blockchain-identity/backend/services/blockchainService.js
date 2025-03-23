@@ -1,230 +1,443 @@
-import { ethers } from 'ethers';
-import { DocumentManager } from '../../utils/DocumentManager.js';
+import Web3 from 'web3';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import verificationAbi from '../contracts/IdentityVerification.json' assert { type: 'json' };
+import documentsAbi from '../contracts/IdentityDocuments.json' assert { type: 'json' };
 
-dotenv.config();
+// Get current file path in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const IDENTITY_VERIFICATION_ABI = [
-    "function isVerifier(address _address) public view returns (bool)",
-    "function addVerifier(address _verifier) external",
-    "function removeVerifier(address _verifier) external",
-    "function getUserStatus(address _user) public view returns (bool isRegistered, bool isVerified)"
-];
+// Load environment variables from both root and backend .env files
+dotenv.config(); // Load backend .env
+dotenv.config({ path: path.join(__dirname, '../../../.env') }); // Load root .env
 
-const IDENTITY_DOCUMENTS_ABI = [
-    "function uploadDocument(uint8 _docType, string memory _ipfsHash) public",
-    "function getDocument(address _user, uint8 _docType) public view returns (string memory ipfsHash, uint256 timestamp, bool isValid, bool isVerified, address verifiedBy)",
-    "function hasValidDocument(address _user, uint8 _docType) public view returns (bool)",
-    "function verifyDocument(address _user, uint8 _docType) external",
-    "function revokeDocument(uint8 _docType) public",
-    "function isVerifier(address _address) public view returns (bool)"
-];
+// Custom error classes
+class BlockchainError extends Error {
+    constructor(message, details = {}) {
+        super(message);
+        this.name = 'BlockchainError';
+        this.details = details;
+    }
+}
 
-class BlockchainService {
+class ContractError extends BlockchainError {
+    constructor(message, details = {}) {
+        super(message);
+        this.name = 'ContractError';
+        this.code = 'CONTRACT_ERROR';
+        this.details = details;
+    }
+}
+
+class AuthorizationError extends BlockchainError {
+    constructor(message, details = {}) {
+        super(message);
+        this.name = 'AuthorizationError';
+        this.code = 'AUTH_ERROR';
+        this.details = details;
+    }
+}
+
+class NetworkError extends BlockchainError {
+    constructor(message, details = {}) {
+        super(message);
+        this.name = 'NetworkError';
+        this.code = 'NETWORK_ERROR';
+        this.details = details;
+    }
+}
+
+class BalanceError extends BlockchainError {
+    constructor(message, details = {}) {
+        super(message);
+        this.name = 'BalanceError';
+        this.code = 'BALANCE_ERROR';
+        this.details = details;
+    }
+}
+
+class ServiceError extends BlockchainError {
+    constructor(message, details = {}) {
+        super(message);
+        this.name = 'ServiceError';
+        this.code = 'SERVICE_ERROR';
+        this.details = details;
+    }
+}
+
+// Helper function for retrying failed operations
+async function withRetry(operation, operationName, maxRetries = 5, delayMs = 2000) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            console.log(`\nAttempting ${operationName} (attempt ${attempt}/${maxRetries})...`);
+            return await operation();
+        } catch (error) {
+            if (attempt === maxRetries) {
+                console.error(`\n❌ ${operationName} failed after all retries:`, error);
+                throw error;
+            }
+            console.log(`\nRetrying in ${delayMs/1000} seconds...`);
+            await new Promise(resolve => setTimeout(resolve, delayMs));
+        }
+    }
+}
+
+export class BlockchainService {
     constructor() {
-        // SKALE Testnet Configuration
-        this.provider = new ethers.JsonRpcProvider("https://testnet.skalenodes.com/v1/giant-half-dual-testnet");
-        this.signer = new ethers.Wallet(process.env.PRIVATE_KEY, this.provider);
+        // Initialize Web3 with SKALE testnet
+        const rpcUrl = process.env.RPC_URL;
+        if (!rpcUrl) {
+            throw new BlockchainError(
+                'Missing RPC URL',
+                { helpMessage: 'Please set RPC_URL in your .env file' }
+            );
+        }
+
+        // Create Web3 provider with increased timeout
+        const provider = new Web3.providers.HttpProvider(rpcUrl, {
+            timeout: 30000, // 30 seconds
+            reconnect: {
+                auto: true,
+                delay: 5000,
+                maxAttempts: 5,
+                onTimeout: true
+            }
+        });
+
+        this.web3 = new Web3(provider);
         
-        // Initialize contracts with deployed addresses
-        this.verificationContract = new ethers.Contract(
-            "0x123676956F35d9791bf3d679a9f0E0f293427a35",
-            IDENTITY_VERIFICATION_ABI,
-            this.signer
-        );
+        // Load contract addresses
+        this.verificationContractAddress = process.env.VERIFICATION_CONTRACT;
+        this.documentsContractAddress = process.env.DOCUMENTS_CONTRACT;
         
-        this.documentsContract = new ethers.Contract(
-            "0xF84098EE1b988D6ddC6ab5864E464A97a15913C5",
-            IDENTITY_DOCUMENTS_ABI,
-            this.signer
+        if (!this.verificationContractAddress || !this.documentsContractAddress) {
+            throw new BlockchainError(
+                'Missing contract addresses',
+                {
+                    verificationContract: this.verificationContractAddress,
+                    documentsContract: this.documentsContractAddress,
+                    helpMessage: 'Please set VERIFICATION_CONTRACT and DOCUMENTS_CONTRACT in your .env file'
+                }
+            );
+        }
+
+        // Load private key
+        const privateKey = process.env.PRIVATE_KEY;
+        if (!privateKey) {
+            throw new BlockchainError(
+                'Missing private key',
+                { helpMessage: 'Please set PRIVATE_KEY in your .env file' }
+            );
+        }
+
+        try {
+            // Create account from private key
+            const account = this.web3.eth.accounts.privateKeyToAccount(privateKey);
+            
+            // Add account to wallet
+            this.web3.eth.accounts.wallet.clear();
+            this.web3.eth.accounts.wallet.add(account);
+
+            // Set account as default
+            this.account = '0x8460A580aD58539128b9d068FbCd07876a501b41';
+            this.web3.eth.defaultAccount = this.account;
+
+            // Log account info
+            console.log('\nAccount Configuration:');
+            console.log('- Account:', this.account);
+        } catch (error) {
+            throw new BlockchainError(
+                'Invalid private key',
+                {
+                    originalError: error.message,
+                    helpMessage: 'Please check your PRIVATE_KEY in .env file'
+                }
+            );
+        }
+
+        // Initialize contract instances
+        this.verificationContract = new this.web3.eth.Contract(
+            verificationAbi.abi,
+            this.verificationContractAddress
         );
 
-        this.documentManager = new DocumentManager(
-            "0xF84098EE1b988D6ddC6ab5864E464A97a15913C5",
-            "https://testnet.skalenodes.com/v1/giant-half-dual-testnet"
+        this.documentsContract = new this.web3.eth.Contract(
+            documentsAbi.abi,
+            this.documentsContractAddress
         );
+
+        this.initialized = false;
     }
 
     async initialize() {
         try {
-            await this.documentManager.initialize();
-            const isVerifier = await this.verificationContract.isVerifier(await this.signer.getAddress());
-            console.log('Blockchain service initialized successfully. Verifier status:', isVerifier);
-        } catch (error) {
-            console.error('Error initializing blockchain service:', error);
-            throw error;
-        }
-    }
+            console.log('\nInitializing blockchain service...');
 
-    async getApprovedRecords(userAddress) {
-        try {
-            const documentTypes = ['NIC', 'BIRTH_CERTIFICATE', 'PASSPORT'];
-            const records = [];
+            // Check network connection
+            await this.checkNetworkConnection();
 
-            for (const docType of documentTypes) {
-                try {
-                    const doc = await this.documentsContract.getDocument(userAddress, this._getDocTypeEnum(docType));
-                    if (doc.isValid && doc.isVerified) {
-                        records.push({
-                            type: docType,
-                            ipfsHash: doc.ipfsHash,
-                            timestamp: Number(doc.timestamp).toString(),
-                            verifiedBy: doc.verifiedBy
-                        });
-                    }
-                } catch (error) {
-                    console.log(`No ${docType} document found for ${userAddress}`);
-                }
-            }
+            // Check account balance
+            await this.checkAccountBalance();
 
-            return records;
-        } catch (error) {
-            console.error('Error fetching approved records:', error);
-            throw error;
-        }
-    }
+            // Verify contract permissions
+            await this.verifyContractPermissions();
 
-    async getPendingRecords(userAddress) {
-        try {
-            const documentTypes = ['NIC', 'BIRTH_CERTIFICATE', 'PASSPORT'];
-            const records = [];
-
-            for (const docType of documentTypes) {
-                try {
-                    const doc = await this.documentsContract.getDocument(userAddress, this._getDocTypeEnum(docType));
-                    if (doc.isValid && !doc.isVerified) {
-                        records.push({
-                            type: docType,
-                            ipfsHash: doc.ipfsHash,
-                            timestamp: Number(doc.timestamp).toString()
-                        });
-                    }
-                } catch (error) {
-                    console.log(`No ${docType} document found for ${userAddress}`);
-                }
-            }
-
-            return records;
-        } catch (error) {
-            console.error('Error fetching pending records:', error);
-            throw error;
-        }
-    }
-
-    async getRevokedRecords(userAddress) {
-        try {
-            const documentTypes = ['NIC', 'BIRTH_CERTIFICATE', 'PASSPORT'];
-            const records = [];
-
-            for (const docType of documentTypes) {
-                try {
-                    const doc = await this.documentsContract.getDocument(userAddress, this._getDocTypeEnum(docType));
-                    if (!doc.isValid) {
-                        records.push({
-                            type: docType,
-                            ipfsHash: doc.ipfsHash,
-                            timestamp: Number(doc.timestamp).toString(),
-                            verifiedBy: doc.verifiedBy
-                        });
-                    }
-                } catch (error) {
-                    console.log(`No ${docType} document found for ${userAddress}`);
-                }
-            }
-
-            return records;
-        } catch (error) {
-            console.error('Error fetching revoked records:', error);
-            throw error;
-        }
-    }
-
-    async getDocuments(userAddress) {
-        try {
-            const documentTypes = ['NIC', 'BIRTH_CERTIFICATE', 'PASSPORT'];
-            const documents = [];
-
-            const userStatus = await this.verificationContract.getUserStatus(userAddress);
-
-            for (const docType of documentTypes) {
-                try {
-                    const doc = await this.documentsContract.getDocument(userAddress, this._getDocTypeEnum(docType));
-                    if (doc.ipfsHash !== '') {
-                        documents.push({
-                            type: docType,
-                            ipfsHash: doc.ipfsHash,
-                            ipfsUrl: `https://gateway.pinata.cloud/ipfs/${doc.ipfsHash}`,
-                            timestamp: Number(doc.timestamp).toString(),
-                            isValid: doc.isValid,
-                            isVerified: doc.isVerified,
-                            verifiedBy: doc.verifiedBy,
-                            userVerified: userStatus.isVerified
-                        });
-                    }
-                } catch (error) {
-                    console.log(`No ${docType} document found for ${userAddress}`);
-                }
-            }
-
-            return documents;
-        } catch (error) {
-            console.error('Error fetching documents:', error);
-            throw error;
-        }
-    }
-
-    async uploadDocument(docType, filePath, userAddress) {
-        try {
-            const userStatus = await this.verificationContract.getUserStatus(userAddress);
-            if (!userStatus.isRegistered) {
-                throw new Error("User is not registered in the system");
-            }
-            return await this.documentManager.uploadDocument(docType, filePath, userAddress);
-        } catch (error) {
-            console.error('Error uploading document:', error);
-            throw error;
-        }
-    }
-
-    async verifyDocument(userAddress, docType) {
-        try {
-            const isVerifier = await this.documentsContract.isVerifier(await this.signer.getAddress());
-            if (!isVerifier) {
-                throw new Error("Not authorized as verifier");
-            }
-            const tx = await this.documentsContract.verifyDocument(userAddress, this._getDocTypeEnum(docType));
-            await tx.wait();
+            this.initialized = true;
+            console.log('\n✅ Blockchain service initialized successfully');
             return true;
         } catch (error) {
-            console.error('Error verifying document:', error);
+            console.error('\n❌ Blockchain service initialization failed:', {
+                name: error.name,
+                code: error.code,
+                message: error.message
+            });
             throw error;
         }
     }
 
-    async revokeDocument(userAddress, docType) {
+    async checkNetworkConnection() {
         try {
-            const isVerifier = await this.documentsContract.isVerifier(await this.signer.getAddress());
-            if (!isVerifier) {
-                throw new Error("Not authorized as verifier");
-            }
-            const tx = await this.documentsContract.revokeDocument(this._getDocTypeEnum(docType));
-            await tx.wait();
+            console.log('\nChecking network connection...');
+            const networkId = await withRetry(
+                () => this.web3.eth.net.getId(),
+                'Network connection test'
+            );
+            console.log('Connected to network:', networkId);
             return true;
         } catch (error) {
-            console.error('Error revoking document:', error);
-            throw error;
+            throw new NetworkError(
+                'Failed to connect to network',
+                { originalError: error.message }
+            );
         }
     }
 
-    _getDocTypeEnum(docType) {
-        const DocumentType = {
-            'NIC': 0,
-            'BIRTH_CERTIFICATE': 1,
-            'PASSPORT': 2
-        };
-        return DocumentType[docType];
+    async checkAccountBalance() {
+        try {
+            console.log('\nChecking account balance...');
+            const balance = await withRetry(
+                () => this.web3.eth.getBalance(this.account),
+                'Balance check'
+            );
+            const ethBalance = this.web3.utils.fromWei(balance, 'ether');
+            console.log('Account balance:', ethBalance, 'ETH');
+
+            if (parseFloat(ethBalance) < 0.01) {
+                throw new BalanceError(
+                    'Insufficient balance',
+                    {
+                        balance: ethBalance,
+                        helpMessage: 'Please get test sFUEL from SKALE faucet'
+                    }
+                );
+            }
+
+            return true;
+        } catch (error) {
+            if (error instanceof BlockchainError) throw error;
+            throw new BalanceError(
+                'Failed to check balance',
+                { originalError: error.message }
+            );
+        }
+    }
+
+    async verifyContractPermissions() {
+        try {
+            console.log('\nVerifying contract permissions...');
+
+            // Check if account is a verifier
+            const isVerifier = await withRetry(
+                () => this.verificationContract.methods.isVerifier(this.account).call(),
+                'Check verifier status'
+            );
+
+            if (!isVerifier) {
+                // Check if account is contract owner
+                const ownerAddress = await withRetry(
+                    () => this.verificationContract.methods.owner().call(),
+                    'Get contract owner'
+                );
+
+                if (ownerAddress.toLowerCase() !== this.account.toLowerCase()) {
+                    throw new AuthorizationError(
+                        'Account not authorized',
+                        {
+                            account: this.account,
+                            ownerAddress,
+                            helpMessage: 'The current account is not the contract owner or a registered verifier'
+                        }
+                    );
+                }
+
+                // Add account as verifier if it's the owner
+                console.log('\nAdding account as verifier...');
+                await withRetry(
+                    () => this.verificationContract.methods.addVerifier(this.account).send({
+                        from: this.account,
+                        gas: 500000
+                    }),
+                    'Add verifier'
+                );
+
+                console.log('✅ Account added as verifier');
+            } else {
+                console.log('✅ Account is already a verifier');
+            }
+
+            return true;
+        } catch (error) {
+            if (error instanceof BlockchainError) throw error;
+            throw new ContractError(
+                'Failed to verify contract permissions',
+                { originalError: error.message }
+            );
+        }
+    }
+
+    async uploadDocument(docType, ipfsHash) {
+        try {
+            if (!this.initialized) {
+                throw new ServiceError(
+                    'Service not initialized',
+                    { helpMessage: 'Call initialize() before uploading documents' }
+                );
+            }
+
+            console.log('\nUploading document to blockchain...');
+            console.log('Document Type:', docType);
+            console.log('IPFS Hash:', ipfsHash);
+
+            const tx = await withRetry(
+                () => this.documentsContract.methods.submitDocument(docType, ipfsHash).send({
+                    from: this.account,
+                    gas: 500000
+                }),
+                'Upload document'
+            );
+
+            console.log('✅ Document uploaded successfully');
+            return tx;
+        } catch (error) {
+            if (error instanceof BlockchainError) throw error;
+            throw new ContractError(
+                'Failed to upload document',
+                { originalError: error.message }
+            );
+        }
+    }
+
+    async getDocument(docType) {
+        try {
+            if (!this.initialized) {
+                throw new ServiceError(
+                    'Service not initialized',
+                    { helpMessage: 'Call initialize() before getting document details' }
+                );
+            }
+
+            console.log('\nGetting document details...');
+            console.log('Document Type:', docType);
+
+            const doc = await withRetry(
+                () => this.documentsContract.methods.getDocument(docType).call(),
+                'Get document'
+            );
+
+            return {
+                ipfsHash: doc.ipfsHash,
+                timestamp: doc.timestamp,
+                isValid: doc.isValid,
+                isVerified: doc.isVerified,
+                verifiedBy: doc.verifiedBy
+            };
+        } catch (error) {
+            if (error instanceof BlockchainError) throw error;
+            throw new ContractError(
+                'Failed to get document',
+                { originalError: error.message }
+            );
+        }
+    }
+
+    async verifyDocument(docType) {
+        try {
+            if (!this.initialized) {
+                throw new ServiceError(
+                    'Service not initialized',
+                    { helpMessage: 'Call initialize() before verifying documents' }
+                );
+            }
+
+            console.log('\nVerifying document...');
+            console.log('Document Type:', docType);
+
+            const tx = await withRetry(
+                () => this.documentsContract.methods.verifyDocument(docType).send({
+                    from: this.account,
+                    gas: 500000
+                }),
+                'Verify document'
+            );
+
+            console.log('✅ Document verified successfully');
+            return tx;
+        } catch (error) {
+            if (error instanceof BlockchainError) throw error;
+            throw new ContractError(
+                'Failed to verify document',
+                { originalError: error.message }
+            );
+        }
+    }
+
+    async addUser(userAddress) {
+        try {
+            if (!this.initialized) {
+                throw new ServiceError(
+                    'Service not initialized',
+                    { helpMessage: 'Call initialize() before adding users' }
+                );
+            }
+
+            console.log('\nAdding user to verification contract...');
+            console.log('User Address:', userAddress);
+
+            // Check if already a user
+            const isUser = await withRetry(
+                () => this.verificationContract.methods.isUser(userAddress).call(),
+                'Check user status'
+            );
+
+            if (isUser) {
+                console.log('✅ Address is already registered as a user');
+                return true;
+            }
+
+            // Add user
+            const tx = await withRetry(
+                () => this.verificationContract.methods.addUser(userAddress).send({
+                    from: this.account,
+                    gas: 500000
+                }),
+                'Add user'
+            );
+
+            console.log('✅ User added successfully');
+            return tx;
+        } catch (error) {
+            if (error instanceof BlockchainError) throw error;
+            throw new ContractError(
+                'Failed to add user',
+                { originalError: error.message }
+            );
+        }
     }
 }
 
-const blockchainService = new BlockchainService();
-export default blockchainService;
+export { BlockchainError, ContractError, AuthorizationError, NetworkError, BalanceError, ServiceError };
+
+// Export error classes
+export { BlockchainError, ContractError, AuthorizationError, NetworkError, BalanceError, ServiceError };

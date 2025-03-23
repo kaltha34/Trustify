@@ -1,4 +1,7 @@
 import { ethers } from 'ethers';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Full contract ABIs with all necessary functions and events
 const IDENTITY_VERIFICATION_ABI = [
@@ -22,6 +25,12 @@ const IDENTITY_DOCUMENTS_ABI = [
     "event DocumentUploaded(address indexed user, uint8 indexed docType, string ipfsHash)",
     "event DocumentVerified(address indexed user, uint8 indexed docType, address indexed verifier)",
     "event DocumentRevoked(address indexed user, uint8 indexed docType)"
+];
+
+const VERIFICATION_ABI = [
+    "function owner() public view returns (address)",
+    "function isVerifier(address _address) public view returns (bool)",
+    "function addVerifier(address _verifier) external"
 ];
 
 async function testBlockchainConnection() {
@@ -104,4 +113,40 @@ async function testBlockchainConnection() {
     }
 }
 
+async function testVerifierSetup() {
+    try {
+        const provider = new ethers.JsonRpcProvider("https://testnet.skalenodes.com/v1/giant-half-dual-testnet");
+        const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+        const signerAddress = await signer.getAddress();
+        
+        console.log('Testing with address:', signerAddress);
+
+        const verificationContract = new ethers.Contract(
+            "0x123676956F35d9791bf3d679a9f0E0f293427a35",
+            VERIFICATION_ABI,
+            signer
+        );
+
+        // Check contract owner
+        const owner = await verificationContract.owner();
+        console.log('Contract owner:', owner);
+        console.log('Is our address the owner?', owner.toLowerCase() === signerAddress.toLowerCase());
+
+        // Check if we're a verifier
+        const isVerifier = await verificationContract.isVerifier(signerAddress);
+        console.log('Is our address a verifier?', isVerifier);
+
+        // If we're the owner but not a verifier, add ourselves as a verifier
+        if (owner.toLowerCase() === signerAddress.toLowerCase() && !isVerifier) {
+            console.log('Adding ourselves as a verifier...');
+            const tx = await verificationContract.addVerifier(signerAddress);
+            await tx.wait();
+            console.log('Successfully added as verifier');
+        }
+    } catch (error) {
+        console.error('Verifier setup test failed:', error);
+    }
+}
+
 testBlockchainConnection();
+testVerifierSetup();

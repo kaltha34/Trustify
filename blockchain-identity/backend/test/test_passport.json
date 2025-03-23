@@ -1,0 +1,10 @@
+{
+  "name": "John Doe",
+  "dob": "1990-01-01",
+  "nationality": "US",
+  "documentNumber": "P123456789",
+  "documentType": "PASSPORT",
+  "issuedBy": "Department of State",
+  "issuedDate": "2020-01-01",
+  "expiryDate": "2030-01-01"
+}
