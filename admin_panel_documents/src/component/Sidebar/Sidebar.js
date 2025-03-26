@@ -14,7 +14,9 @@ import {
 import "./Sidebar.css";
 
 const Sidebar = () => {
+  const [name, setName] = useState("");
   const [darkMode, setDarkMode] = useState(true);
+  const email = localStorage.getItem("email");
 
   useEffect(() => {
     if (darkMode) {
@@ -40,12 +42,22 @@ const Sidebar = () => {
     <div className="Content">
       <div className="sidebar">
         <div className="profile">
-          <img src="/image.jpe" alt="Profile" className="profile-image" />
-          <div className="profile-info">
-            <h3>Kalhara Thabrew</h3>
-            <p>kalhara.s.thabrew@gmail.com</p>
+        <div className="profile-info">
+            <p
+              style={{
+                fontSize: "20px",
+                fontWeight: "bold",
+                lineHeight: "1.5px",
+                marginTop: "20px",
+              }}
+            >
+              {name}
+            </p>
+            <p>{email}</p>
           </div>
         </div>
+
+        
         <ul className="menu">
           {menuItems.map((item, index) => (
             <li key={index} className="menu-item">
