@@ -1,9 +1,11 @@
 .profile {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  margin-top: 15px;
+  margin-top: 10px;
+  justify-content: center;
+  margin-bottom: 5px;
 }
 .profile-image {
   width: 40px;
