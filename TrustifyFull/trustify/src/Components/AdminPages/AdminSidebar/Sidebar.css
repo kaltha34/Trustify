@@ -1,0 +1,247 @@
+.profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.profile-image-label {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: 2px solid #ddd;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.upload-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #888;
+  font-size: 54px;
+}
+
+.profile-info p {
+  font-size: 0.88rem;
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+/* Sidebar */
+.adminsidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #900303;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translateX(-100%); /* Initially hidden */
+  transition: transform 0.3s ease-in-out;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.adminsidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sidebar open state */
+.adminsidebar.open {
+  transform: translateX(0);
+}
+
+/* Overlay (shows when sidebar is open) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none; /* Hidden initially */
+  z-index: 1000;
+}
+
+/* Show overlay when sidebar is open */
+.overlay.show {
+  display: block;
+}
+
+/* Menu styles */
+.adminmenu {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+  margin-left: 5px;
+}
+
+.adminmenu-link {
+  color: white;
+  text-decoration: none;
+}
+.adminmenu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.adminmenu-item:hover {
+  background-color: #8d0101;
+}
+
+.adminmenu-item.active {
+  background-color: black;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.text {
+  font-size: 16px;
+}
+
+/* Dark Mode */
+.dark-mode {
+  background-color: #272727;
+  color: white;
+}
+
+.dark-mode .adminmenu-item:hover {
+  background-color: #790303;
+}
+
+.dark-mode .adminmenu-item.active {
+  background-color: black;
+}
+
+.theme-toggle-buttons {
+  margin-left: 15px;
+  width: 180px;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  background-color: #272727;
+  margin-bottom: 30px;
+  border-radius: 50px;
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  color: white;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.theme-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+}
+
+.theme-btn.active {
+  background-color: #0f4d5c;
+  border-radius: 50px;
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.6);
+  transform: translateY(2px);
+}
+
+.menu-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 50%;
+  transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.menu-btn svg {
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  transition: transform 0.3s ease-in-out;
+}
+.light-mode .menu-btn svg {
+  color: #000;
+}
+
+.menu-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.adminsidebar.open + .menu-btn {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .menu-btn {
+    display: none;
+  }
+}
+
+.menu-btn .lucide-menu {
+  transform: rotate(0deg);
+}
+
+.menu-btn .lucide-x {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,232 @@
+.SignUp-Container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d3e2e4;
+  padding: 20px;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Header Styling */
+.header-signup {
+  text-align: right;
+  flex: 1;
+}
+
+.header-signup p {
+  font-size: 34px;
+  font-weight: bolder;
+  line-height: 1px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.header-signup h1 {
+  letter-spacing: 3px;
+  color: #000000;
+  font-weight: bolder;
+}
+
+.header-signup h1 span {
+  font-size: 112px;
+  display: inline-block;
+  opacity: 0;
+  animation: fadeInOutLetter 10s infinite;
+}
+
+@keyframes fadeInOutLetter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.header h1 span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.header h1 span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.header h1 span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.header h1 span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.header h1 span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+.header h1 span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+
+.header h1 span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+
+.header h1 span:nth-child(8) {
+  animation-delay: 0.7s;
+}
+
+/* SignUp Form */
+.SignUp-Form {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  border: 2px solid rgb(0, 0, 0);
+  box-shadow: 10px 10px 35px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  flex: 1;
+  margin-right: 190px;
+  text-align: center;
+}
+
+.SignUp-Form h2 {
+  font-size: 34px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+/* Input Fields */
+.SignUp-Form input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #000000;
+  border-radius: 50px;
+  font-size: 16px;
+}
+
+/* Submit Button */
+.SignUp-Form .SignUp-Button {
+  width: 100%;
+  padding: 12px;
+  background-color: black;
+  color: white;
+  font-size: 18px;
+  border: 1px solid white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.SignUp-Form .SignUp-Button:hover {
+  background-color: #0056b3;
+}
+
+/* Already Account Section */
+.Already-Acc p {
+  font-size: 14px;
+  font-weight: bolder;
+  text-align: center;
+  color: #000000;
+}
+
+.Already-Acc span {
+  color: #096bd3;
+  cursor: pointer;
+}
+
+.Already-Acc span:hover {
+  text-decoration: underline;
+}
+
+/* Social Options */
+.Options .button {
+  margin: 10px 0;
+}
+
+.Options .login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  border: 1px solid white;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Options .login-button:hover {
+  background-color: #0056b3;
+}
+
+.Options .login-button .button-text {
+  margin-right: 10px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .SignUp-Container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .SignUp-Form {
+    padding: 40px;
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+  .SignUp-Form h2 {
+    font-size: 20px;
+  }
+
+  .SignUp-Form input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .SignUp-Form .SignUp-Button {
+    font-size: 14px;
+  }
+
+  .Options .login-button {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .SignUp-Container h1 {
+    font-size: 28px;
+  }
+
+  .SignUp-Form h2 {
+    font-size: 18px;
+  }
+
+  .SignUp-Form input {
+    font-size: 14px;
+  }
+
+  .SignUp-Form .SignUp-Button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .Options .login-button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}

@@ -1,0 +1,234 @@
+.SuperAdmin-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d3e2e4;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100vh;
+  box-sizing: border-box;
+}
+.SuperAdmin-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  flex: 1;
+}
+
+.SuperAdmin-Container p {
+  font-size: 34px;
+  font-weight: bolder;
+  margin-left: 20px;
+  line-height: 0.5px;
+  color: #000000;
+}
+
+.SuperAdmin-Container h1 {
+  margin-top: 2px;
+  letter-spacing: 3px;
+  color: #000000;
+  font-weight: bolder;
+  margin-left: 20px;
+}
+
+.SuperAdmin-Container h1 span {
+  font-size: 102px;
+  display: inline-block;
+  opacity: 0;
+  animation: fadeInOutLetter 10s infinite;
+}
+
+@keyframes fadeInOutLetter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.SuperAdmin-Container h1 span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.SuperAdmin-Container h1 span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.SuperAdmin-Container h1 span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.SuperAdmin-Container h1 span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.SuperAdmin-Container h1 span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+.SuperAdmin-Container h1 span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+
+.SuperAdmin-Container h1 span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+
+.SuperAdmin-Container h1 span:nth-child(8) {
+  animation-delay: 0.7s;
+}
+
+.SuperAdminLogIn-Form {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  border: 2px solid rgb(0, 0, 0);
+  box-shadow: 10px 10px 35px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  flex: 1;
+  margin-right: 250px;
+}
+
+.SuperAdminLogIn-Form h2 {
+  font-size: 34px;
+  color: #000000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+@keyframes fadeInLetter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.superaccount-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+.superadmin-login-buttom {
+  padding: 12px 20px;
+  background-color: black;
+  color: white;
+  font-weight: bolder;
+  border-radius: 50px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.superaccount-link button:hover {
+  background-color: #0056b3;
+}
+
+.SuperAdminLogIn-Form input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #000000;
+  border-radius: 50px;
+  font-size: 16px;
+}
+
+.SuperAdminLogIn-Form .Superadmin-login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: black;
+  color: white;
+  font-size: 18px;
+  border: 1px solid white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.aSuperAdminLogIn-Form .Superadmin-login-button:hover {
+  background-color: #0056b3;
+}
+
+.otp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.otp-modal-content {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.otp-modal-content h2 {
+  font-size: 34px;
+  color: #000000;
+}
+
+.otp-modal-content .otp-input-field {
+  padding: 12px;
+  margin-top: 20px;
+  width: 50%;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: black;
+  text-align: center;
+  background-color: #f8f8f8;
+}
+
+.otp-modal-content .otp-error-message {
+  display: block;
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+}
+
+.otp-modal-content .otp-modal-buttons {
+  margin-top: 20px;
+}
+
+.otp-modal-content .verify-otp-button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  width: 60%;
+  font-weight: bolder;
+  letter-spacing: 5px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.modal-content .verify-otp-button:hover {
+  background-color: #0056b3;
+}

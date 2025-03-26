@@ -1,0 +1,109 @@
+.help-center {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 300px;
+  padding: 2px;
+  flex-direction: column;
+}
+
+.help-center-header h1 {
+  letter-spacing: 1px;
+  font-size: 34px;
+  margin-bottom: 20px;
+}
+
+.help-content {
+  padding: 30px;
+  width: 90%;
+}
+
+.gray-container {
+  background-color: #a9a9a9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+.email-section label,
+.problem-section label {
+  font-size: 16px;
+  color: #000000;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.email-section input,
+.problem-section textarea {
+  margin-top: 10px;
+  width: 95%;
+  padding: 10px;
+  font-size: 15px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  color: #333;
+  transition: border 0.3s ease;
+}
+
+.email-section input:focus,
+.problem-section textarea:focus {
+  border-color: #4a90e2;
+}
+
+.problem-section textarea {
+  resize: vertical;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.faq-section {
+  margin-top: 30px;
+}
+
+.faq-section h3 {
+  font-size: 24px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.faq-section ul {
+  list-style-type: none;
+  padding: 5px;
+}
+
+.faq-section li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.faq-section li:hover {
+  background-color: #e3f2fd;
+  color: black;
+}
+
+.submit-btn {
+  background-color: #000000;
+  color: #fff;
+  padding: 12px 20px;
+  border: 1px solid white;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #357ab7;
+}

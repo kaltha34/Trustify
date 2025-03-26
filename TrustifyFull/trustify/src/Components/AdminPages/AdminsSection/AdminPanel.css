@@ -1,0 +1,85 @@
+.admin-panel1 {
+  margin-left: 250px;
+  padding: 20px;
+  color: white;
+}
+
+.admin-panel1 h2 {
+  font-size: 40px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.grid-container1 {
+  margin-left: 115px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.grid-item1 {
+  background-color: #373333;
+  padding: 60px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  width: 54%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-item1 p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: inherit;
+}
+
+.grid-item1 p strong {
+  font-weight: bold;
+}
+
+.status-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.status-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.online {
+  background-color: green;
+  color: white;
+}
+
+.offline {
+  background-color: red;
+  color: white;
+}
+
+.online:hover {
+  background-color: darkgreen;
+}
+
+.offline:hover {
+  background-color: darkred;
+}
+
+@media (max-width: 1024px) {
+  .grid-container1 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

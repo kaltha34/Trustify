@@ -1,0 +1,90 @@
+/* Adjust profile container to leave space for sidebar */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: calc(100% - 250px); /* Adjust width based on sidebar width */
+  margin-left: 250px; /* Same width as sidebar */
+  position: relative;
+}
+
+/* Logout button in the top-right */
+.adminlogout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.adminlogout-button:hover {
+  background-color: #e63e3e;
+}
+
+.adminlogout-button svg {
+  stroke-width: 2;
+}
+
+/* Profile header (icon at the top) */
+.profile-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-icon {
+  color: white;
+  background-color: #444;
+  padding: 20px;
+  border-radius: 50%;
+}
+
+/* Profile details box */
+.profile-details {
+  background: #3b3b3b;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  width: 400px;
+  color: white;
+}
+
+.detail-box {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #555;
+  padding: 10px 0;
+}
+
+.detail-box h4 {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.detail-box p {
+  margin: 0;
+  color: #ccc;
+}
+
+.light-mode .profile-details {
+  background-color: white;
+}
+
+.light-mode .detail-box h4 {
+  color: black;
+}
+
+.light-mode .profile-icon {
+  background-color: black;
+}
