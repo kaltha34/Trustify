@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import {
-  Home,
+  HelpCircle,
   Users,
   File,
   Sun,
+  User,
+  
   Moon,
+  MessageCircle,
 } from "lucide-react";
 import "./Sidebar.css";
 
@@ -24,9 +27,12 @@ const Sidebar = () => {
   }, [darkMode]);
 
   const menuItems = [
-    { name: "Profile", icon: <Home />, path: "/" },
-    { name: "Admin Panel", icon: <Users />, path: "/admin" },
+    { name: "Profile", icon: <User/>, path: "/" },
+    { name: "Admins", icon: <Users />, path: "/admin" },
     { name: "Documents", icon: <File />, path: "/documents" },
+    { name: "FAQ", icon: <HelpCircle />, path: "/faq" },
+    { name: "Reply", icon: <MessageCircle />, path: "/reply" },
+
     
   ];
 
