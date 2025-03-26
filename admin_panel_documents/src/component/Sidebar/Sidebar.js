@@ -19,6 +19,31 @@ const Sidebar = () => {
   const email = localStorage.getItem("email");
 
   useEffect(() => {
+    if (!email) return; // Stop if email is not available
+
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/auth/admin-info/${email}`
+        );
+        const data = await response.json();
+        console.log("API Response:", data);
+
+        if (data.name) {
+          setName(data.name);
+          console.log("Name set to:", data.name);
+        } else {
+          console.log("Admin not found");
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [email]);
+
+  useEffect(() => {
     if (darkMode) {
       document.body.classList.add("dark-mode");
       document.body.classList.remove("light-mode");
