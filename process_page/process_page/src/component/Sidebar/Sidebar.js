@@ -17,6 +17,7 @@ import "./Sidebar.css";
 
 const Sidebar = () => {
   const [darkMode, setDarkMode] = useState(true);
+  const [isOpen, setIsOpen] = useState(window.innerWidth > 1024);
   const [name, setName] = useState("");
   const email = localStorage.getItem("email"); // Store email once
 
@@ -61,9 +62,14 @@ const Sidebar = () => {
         </div>
 
         <ul className="menu">
-          {menuItems.map((item, index) => (
-            <li key={index} className="menu-item">
-              <Link to={item.path} className="menu-link">
+          {menuItems.map((item) => (
+            <li key={item.name} className="menu-item">
+              <Link
+                to={item.path}
+                className="menu-link"
+                onClick={() => window.innerWidth <= 1024 && setIsOpen(false)}
+                tabIndex={isOpen ? "0" : "-1"}
+              >
                 <span className="icon">{item.icon}</span>
                 <span className="text">{item.name}</span>
               </Link>
